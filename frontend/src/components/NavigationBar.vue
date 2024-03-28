@@ -9,7 +9,7 @@
     </ul>
   </div>
   <div class="nav-right">
-    <span>{{'Hi, ' + store1.state.user.username}}</span>&nbsp;|&nbsp;<el-button type="text" @click="logOut">Log Out</el-button>
+    <span>{{'Hi, ' + store1.state.user.username}}</span>&nbsp;|&nbsp;<el-button link type="primary" @click="logOut">Log Out</el-button>
   </div>
 </template>
 
@@ -27,14 +27,12 @@ export default {
   data() {
     return {
       headerList: [
-        // {id: '1', path: '/deepLearning', title: 'Deep Learning'},
-        // {id: '2', path: '/medicalArchivePreprocess', title: 'Medical Archive Preprocess'},
-        // {id: '4', path: '/knowledgeGraph', title: 'Knowledge Graph'},
-        // {id: '5', path: '/medicalCaseDeepSearch', title: 'Medical Case Deep Search'},
-        // {id: '6', path: '/autoDiagnosis', title: 'Automatic Diagnosis'},
-        // {id: '7', path: '/QA', title: 'Q&A'},
-        // {id: '8', path: '/consult', title: 'Consult'},
-        {id: '9', path: '/my', title: 'UserInfo'}
+        {id: '1', path: '/datasets', title: 'Data Preprocessing'},
+        {id: '2', path: '/train', title: 'Model Train'},
+        {id: '3', path: '/autoQA', title: 'Auto QA'},
+        {id: '4', path: '/knowledgeGraph', title: 'Similar Search'},
+        {id: '5', path: '/QAPlatform', title: 'QA Platform'},
+        {id: '6', path: '/my', title: 'User Info'}
       ],
       isShow: false
     };
@@ -48,7 +46,7 @@ export default {
       }).then(() => {
         window.location.reload();
         store1.commit('clearUserInfo');
-        this.$router.push('/');
+        this.$router.push('/login');
         this.$notify({
           title: 'Success',
           message: 'Log out successfully! ',
