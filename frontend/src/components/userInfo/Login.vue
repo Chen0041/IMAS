@@ -1,8 +1,9 @@
 <template>
-  <div id="log-in">
-    <div id="log-in-div">
-      <el-form ref="loginForm" :model="loginForm">
-        <p id="form-head">Intelligent Medical Analysis System</p>
+  <div style="display: flex; justify-content: center;">
+    <el-col :span="8"></el-col>
+    <el-col :span="8">
+      <el-form style="width: 450px; border: 1px solid #cccccc; border-radius: 5px; padding: 20px" ref="loginForm" :model="loginForm">
+        <p style="font-size: 22px; font-weight: bolder; color: #409EFF; margin: 20px;">Intelligent Medical Analysis System</p>
         <el-form-item prop="username">
           <el-input v-model="loginForm.username" name="username" placeholder="Username" auto-complete="on"></el-input>
         </el-form-item>
@@ -10,15 +11,18 @@
           <el-input v-model="loginForm.password" name="password" placeholder="Password" auto-complete="on" show-password @keyup.enter.native="login"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="login" id="login-button">Log in</el-button>
+          <el-col :span="7"></el-col>
+          <el-button type="primary" @click="login">Log in</el-button>
           <el-button type="primary" @click="signUp">Sign up</el-button>
         </el-form-item>
       </el-form>
-    </div>
+    </el-col>
   </div>
 </template>
 
 <script>
+import { useStore } from "vuex"
+const store1 = useStore();
 export default {
   name: "login",
   data() {
@@ -53,8 +57,8 @@ export default {
           // console.log(res.data);
           // console.log("Token: " + res.headers["token"]);
           // Save user's info & token
-          this.$store.commit('saveUserInfo', res.data.info);
-          this.$store.commit('saveToken', res.headers["token"]);
+          store1.commit('saveUserInfo', res.data.info);
+          store1.commit('saveToken', res.headers["token"]);
           this.$notify({
             title: 'Success',
             message: 'Welcome! ',
@@ -87,29 +91,5 @@ export default {
 </script>
 
 <style scoped>
-#log-in {
-  text-align: center;
-}
 
-#log-in-div {
-  width: 450px;
-  margin-left: 370px;
-  padding: 15px;
-  text-align: center;
-  border: 1px solid #cccccc;
-  border-radius: 5px;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-#form-head {
-  font-size: 22px;
-  font-weight: bolder;
-  color: #409EFF;
-  margin: 20px;
-}
-
-#login-button {
-  margin-left: 120px
-}
 </style>

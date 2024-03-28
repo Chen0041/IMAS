@@ -12,19 +12,22 @@ import * as echarts from 'echarts'
 
 const app = createApp(App)
 
-app.use(router)
-app.use(store)
 app.use(ElementPlus)
 app.use(VCharts)
+app.use(router)
+app.use(store)
 
 app.config.productionTip = false;
 app.config.globalProperties.$echarts = echarts
 app.config.globalProperties.$axios = axios
 
+import { useStore } from "vuex"
+const store1 = useStore();
+
 axios.defaults.baseURL = '/api';
 axios.interceptors.request.use(
     config => {
-        const token = store.state.token;
+        const token = store1.state.token;
         if (token) {
             // config.headers.Authorization = token;
             // config.headers["token"] = token;
@@ -44,7 +47,7 @@ axios.interceptors.response.use(
         if (error.response) {
             switch (error.response.status) {
                 case 403:
-                    this.$store.commit('clearUserInfo');
+                    store1.commit('clearUserInfo');
                     router.replace({
                         path: '/',
                         query: {

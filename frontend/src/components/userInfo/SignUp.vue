@@ -1,8 +1,9 @@
 <template>
-  <div id="sign-up">
-    <div id="sign-up-div">
-      <el-form :model="signUpForm" :rules="rules" label-position="left" label-width="100px">
-        <p id="form-head">Sign Up</p>
+  <div style="display: flex; justify-content: center;">
+    <el-col :span="8"></el-col>
+    <el-col :span="8">
+      <el-form style="width: 400px; border: 1px solid #cccccc; border-radius: 5px; padding: 20px" :model="signUpForm" :rules="rules" label-position="left" label-width="100px">
+        <p style="font-size: 22px; font-weight: bolder; color: #409EFF; margin: 20px;">Sign Up</p>
         <el-form-item label="Login Name" prop="loginName">
           <el-input v-model="signUpForm.loginName" name="loginName" auto-complete="on"></el-input>
         </el-form-item>
@@ -30,7 +31,7 @@
         </el-form-item>
         <el-text class="mx-1" type="info">Notes: Doctor accounts can only be registered by doctors.</el-text>
       </el-form>
-    </div>
+    </el-col>
   </div>
 </template>
 
@@ -56,9 +57,6 @@ export default {
         password: [
           {required: true, message: 'Please input password', trigger: 'blur'}
         ],
-        name: [
-          {required: false, trigger: 'blur'}
-        ],
         gender: [
           {required: true, message: 'Please input your gender', trigger: 'blur'},
           {min: 1, max: 1, message: 'only need one character', trigger: 'blur'}
@@ -67,12 +65,6 @@ export default {
           {required: true, message: 'Please input your age', trigger: 'blur'},
           {min: 1, max: 3, message: 'age is between 1 and 200', trigger: 'blur'}
         ],
-        phone: [
-          {required: false, trigger: 'blur'}
-        ],
-        email: [
-          {required: false, trigger: 'blur'}
-        ]
       }
     };
   },
@@ -115,25 +107,5 @@ export default {
 </script>
 
 <style scoped>
-#sign-up {
-  text-align: center;
-}
 
-#sign-up-div {
-  width: 400px;
-  margin-left: 400px;
-  padding: 20px;
-  text-align: center;
-  border: 1px solid #cccccc;
-  border-radius: 5px;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-#form-head {
-  font-size: 24px;
-  font-weight: bolder;
-  margin-bottom: 20px;
-  color: #409EFF;
-}
 </style>
