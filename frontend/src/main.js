@@ -1,0 +1,60 @@
+import './assets/main.css'
+
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
+import store from './store'
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import axios from 'axios'
+import VCharts from 'v-charts'
+import * as echarts from 'echarts'
+
+const app = createApp(App)
+
+app.use(router)
+app.use(store)
+app.use(ElementPlus)
+app.use(VCharts)
+
+app.config.productionTip = false;
+app.config.globalProperties.$echarts = echarts
+app.config.globalProperties.$axios = axios
+
+axios.defaults.baseURL = '/api';
+axios.interceptors.request.use(
+    config => {
+        const token = store.state.token;
+        if (token) {
+            // config.headers.Authorization = token;
+            // config.headers["token"] = token;
+        }
+        return config;
+    },
+    error => {
+        console.log("[main.js -> axios] Error! ");
+        return Promise.reject(error);
+    }
+);
+axios.interceptors.response.use(
+    res => {
+        return res;
+    },
+    error => {
+        if (error.response) {
+            switch (error.response.status) {
+                case 403:
+                    this.$store.commit('clearUserInfo');
+                    router.replace({
+                        path: '/',
+                        query: {
+                            redirect: router.currentRoute.fullPath
+                        }
+                    });
+            }
+        }
+        return Promise.reject(error.response.data);
+    }
+);
+
+app.mount('#app')
