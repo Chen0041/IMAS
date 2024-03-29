@@ -4,8 +4,6 @@
       width="640px"
       title="UPLOAD"
       style="margin-top: 200px"
-      :close-on-click-modal="false"
-      :close-on-press-escape="false"
       :show-close="false"
   >
     <el-form

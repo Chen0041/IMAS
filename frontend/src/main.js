@@ -9,6 +9,7 @@ import 'element-plus/dist/index.css'
 import axios from 'axios'
 import VCharts from 'v-charts'
 import * as echarts from 'echarts'
+import MyComponent from './App.vue'
 
 const app = createApp(App)
 
@@ -16,6 +17,8 @@ app.use(ElementPlus)
 app.use(VCharts)
 app.use(router)
 app.use(store)
+
+app.component('MyComponent', MyComponent)
 
 app.config.productionTip = false;
 app.config.globalProperties.$echarts = echarts
