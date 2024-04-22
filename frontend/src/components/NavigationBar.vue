@@ -31,7 +31,7 @@
                   {id: '5', path: '/medicalCaseDeepSearch', title: 'Medical Case Deep Search'},
                   {id: '6', path: '/autoDiagnosis', title: 'Automatic Diagnosis'},
                   {id: '7', path: '/QA', title: 'Q&A'},
-                  {id: '8', path: '/consult', title: 'Consult'},
+                  {id: '8', path: '/autoQA', title: 'AutoQA'},
                   {id: '10', path: '/userInfo', title: 'UserInfo'}
                 ],
                 isShow: false

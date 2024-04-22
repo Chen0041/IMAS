@@ -5,6 +5,8 @@ import Login from "../components/UserInfo/Login";
 import SignUp from "../components/UserInfo/SignUp";
 import UserInfo from "../components/UserInfo/UserInfo";
 
+import AutoQA from "../components/AutoQA/AutoQA"
+
 import deepLearning from "../pages/deepLearning";
 import DeepModels from "../component_ori/DeepLearning/DeepModels";
 import UploadDataset from "../component_ori/DeepLearning/UploadDataset";
@@ -56,13 +58,25 @@ const router = new Router({
       redirect: '/login'
     }, {
       path: '/login',
-      name: 'Login.vue',
       component: Login
     }, {
       path: '/signUp',
-      name: 'SignUp.vue',
       component: SignUp
     }, {
+      path: '/userInfo',
+      name: 'UserInfo',
+      component: UserInfo,
+      meta: {
+        keepAlive: true
+      }
+    }, {
+      path: '/autoQA',
+      component: AutoQA
+    },
+
+
+
+    {
       path: '/deepLearning',
       component: deepLearning,
       children: [
@@ -186,13 +200,6 @@ const router = new Router({
       path: '/consult',
       name: 'consult',
       component: consult,
-      meta: {
-        keepAlive: true
-      }
-    }, {
-      path: '/userInfo',
-      name: 'UserInfo',
-      component: UserInfo,
       meta: {
         keepAlive: true
       }
