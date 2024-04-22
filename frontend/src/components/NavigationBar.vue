@@ -1,94 +1,128 @@
 <template>
-  <div class="nav-center">
-    <ul>
-      <li v-for="(list) in headerList" :key="list.id">
-        <router-link :to="{path: list.path}" onmouseover="this.style.color = '#409EFF'" onmouseout="this.style.color = 'rgb(140, 197, 255)'">
-          {{list.title}}
-        </router-link>
-      </li>
-    </ul>
-  </div>
-  <div class="nav-right">
-    <span>{{'Hi, ' + store1.state.user.username}}</span>&nbsp;|&nbsp;<el-button link type="primary" @click="logOut">Log Out</el-button>
-  </div>
+  <el-header height="80px">
+    <div>
+      <div class="nav-center">
+        <ul>
+          <li v-for="(list) in headerList" :key="list.id">
+            <router-link :to="{path: list.path}" onmouseover="this.style.color = '#409EFF'" onmouseout="this.style.color = 'rgb(140, 197, 255)'">
+              {{list.title}}
+            </router-link>
+          </li>
+        </ul>
+      </div>
+      <div class="nav-right">
+        <span>{{'Hi, ' + this.$store.state.user.username}}</span>&nbsp;|&nbsp;<el-button type="text" @click="logOut">Log Out</el-button>
+<!--        <span>{{'Hi, ' + this.$store.state.user.username}}</span>&nbsp;|&nbsp;<el-button type="text" @click="logOut">Log Out</el-button>-->
+      </div>
+    </div>
+  </el-header>
 </template>
 
 <script>
-import { useStore } from "vuex"
-const store1 = useStore();
-export default {
-  name: "NavigationBar",
-  computed: {
-    store1() {
-      // TODO store userInfo
-      // return store1
-      return {"state":{"user":{"username":"Test"}}}}
-  },
-  data() {
-    return {
-      headerList: [
-        {id: '1', path: '/datasets', title: 'Data Preprocessing'},
-        {id: '2', path: '/train', title: 'Model Train'},
-        {id: '3', path: '/autoQA', title: 'Auto QA'},
-        {id: '4', path: '/knowledgeGraph', title: 'Similar Search'},
-        {id: '5', path: '/QAPlatform', title: 'QA Platform'},
-        {id: '6', path: '/my', title: 'User Info'}
-      ],
-      isShow: false
-    };
-  },
-  methods: {
-    logOut() {
-      this.$confirm('Log Out? ', 'Notification', {
-        confirmButtonText: 'Confirm',
-        cancelButtonText: 'Cancel',
-        type: 'warning'
-      }).then(() => {
-        window.location.reload();
-        store1.commit('clearUserInfo');
-        this.$router.push('/login');
-        this.$notify({
-          title: 'Success',
-          message: 'Log out successfully! ',
-          type: 'success'
-        });
-      }).catch(() => {
-      });
+    export default {
+        name: "NavigationBar",
+        data() {
+            return {
+                headerList: [
+                  {id: '1', path: '/vqa', title: 'VQA\u00a0\u00a0\u00a0\u00a0'},
+                  {id: '2', path: '/deepLearning', title: 'Deep Learning'},
+                  {id: '3', path: '/medicalArchivePreprocess', title: 'Medical Archive Preprocess'},
+                  {id: '4', path: '/knowledgeGraph', title: 'Knowledge Graph'},
+                  {id: '5', path: '/medicalCaseDeepSearch', title: 'Medical Case Deep Search'},
+                  {id: '6', path: '/autoDiagnosis', title: 'Automatic Diagnosis'},
+                  {id: '7', path: '/QA', title: 'Q&A'},
+                  {id: '8', path: '/consult', title: 'Consult'},
+                  {id: '10', path: '/my', title: 'My'}
+                ],
+                isShow: false
+            };
+        },
+        methods: {
+            goToMainPage() {
+                this.$router.push('/vqa');
+            },
+            logOut() {
+                this.$confirm('Log Out? ', 'Notification', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    this.$store.commit('clearUserInfo');
+                    this.$router.push('/login');
+                    // window.location.reload();
+                    this.$notify({
+                        title: 'Success',
+                        message: 'Log out successfully! ',
+                        type: 'success'
+                    });
+                }).catch(() => {
+                });
+            }
+        }
     }
-  }
-}
 </script>
 
 <style scoped>
-ul {
-  line-height: 75px;
-  margin: 0;
-  padding-left: 0;
-}
+  .el-header {
+    position: fixed;
+    top: 0;
 
-li {
-  list-style: none;
-  float: left;
-  margin-left: 40px;
-}
+    /*left: 30px;*/
+    /*right: 30px;*/
 
-a {
-  text-decoration: none;
-  display: block;
-  color: rgb(140, 197, 255);
-}
+    left: 0;
+    right: 0;
 
-.nav-center {
-  float: left;
-}
+    border-bottom: 1px solid #dcdfe6;
+    /*padding-left: 30px;*/
+    padding-left: 0px;
+    /*color: #333;*/
+    /*text-align: center;*/
+    font-size: 16px;
+    background-color: white;
+    z-index: 999;
+  }
 
-.nav-center ul li a.is-active {
-  color: #409EFF;
-  border-bottom: 4px solid rgb(140, 197, 255);
-}
+  ul {
+    line-height: 76px;
+    margin: 0;
+    padding-left: 0;
+    /*padding-left: 20px;*/
+  }
 
-.nav-right {
-  float: right;
-  line-height: 80px;
-}
+  li {
+    list-style: none;
+    float: left;
+    margin-left: 20px;
+    /*height: 80px;*/
+  }
+
+  a {
+    text-decoration: none;
+    display: block;
+    /* padding: 0 10px; */
+    color: rgb(140, 197, 255);
+    /*font-weight: bolder;*/
+  }
+
+  .nav-left {
+    height: 80px;
+    float: left;
+    cursor: pointer;
+  }
+
+  .nav-center {
+    float: left;
+    /*margin-left: 50px;*/
+  }
+
+  .nav-center ul li a.is-active {
+    color: #409EFF;
+    border-bottom: 4px solid rgb(140, 197, 255);
+  }
+
+  .nav-right {
+    float: right;
+    line-height: 80px;
+  }
 </style>

@@ -1,66 +1,67 @@
-import './assets/main.css'
-
-import { createApp } from 'vue'
-import App from './App.vue'
+// The Vue build version to load with the `import` command
+// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import Vue from 'vue'
+import App from './App'
 import router from './router'
 import store from './store'
-import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
+
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import VCharts from 'v-charts'
-import * as echarts from 'echarts'
-import MyComponent from './App.vue'
 
-const app = createApp(App)
-
-app.use(ElementPlus)
-app.use(VCharts)
-app.use(router)
-app.use(store)
-
-app.component('MyComponent', MyComponent)
-
-app.config.productionTip = false;
-app.config.globalProperties.$echarts = echarts
-app.config.globalProperties.$axios = axios
-
-import { useStore } from "vuex"
-const store1 = useStore();
-
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
+Vue.prototype.$axios = axios;
 axios.defaults.baseURL = '/api';
+axios.defaults.timeout=360000
+// axios.defaults.baseURL = '/';
 axios.interceptors.request.use(
-    config => {
-        const token = store1.state.token;
-        if (token) {
-            // config.headers.Authorization = token;
-            // config.headers["token"] = token;
-        }
-        return config;
-    },
-    error => {
-        console.log("[main.js -> axios] Error! ");
-        return Promise.reject(error);
+  config => {
+    const token = store.state.token;
+    if (token) {
+      // config.headers.Authorization = token;
+      // config.headers["token"] = token;
     }
+    return config;
+  },
+  error => {
+    console.log("[main.js -> axios] Error! ");
+    return Promise.reject(error);
+  }
 );
 axios.interceptors.response.use(
-    res => {
-        return res;
-    },
-    error => {
-        if (error.response) {
-            switch (error.response.status) {
-                case 403:
-                    store1.commit('clearUserInfo');
-                    router.replace({
-                        path: '/',
-                        query: {
-                            redirect: router.currentRoute.fullPath
-                        }
-                    });
+  res => {
+    return res;
+  },
+  error => {
+    if (error.response) {
+      switch (error.response.status) {
+        case 403:
+          this.$store.commit('clearUserInfo');
+          router.replace({
+            path: '/',
+            query: {
+              redirect: router.currentRoute.fullPath
             }
-        }
-        return Promise.reject(error.response.data);
+          });
+      }
     }
+    return Promise.reject(error.response.data);
+  }
 );
 
-app.mount('#app')
+Vue.config.productionTip = false;
+
+Vue.use(ElementUI);
+Vue.use(VCharts);
+
+/* eslint-disable no-new */
+new Vue({
+  el: '#app',
+  router,
+  store,
+  // render: h => h(App),
+  components: { App },
+  template: '<App/>'
+});
