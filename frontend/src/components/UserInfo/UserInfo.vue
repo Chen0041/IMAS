@@ -65,7 +65,6 @@
               <el-form-item style="text-align: center;margin: 40px auto;">
                 <el-button type="primary" @click="modifyMyInfo">Modify</el-button>
                 <el-button @click="resetMyInfo">Reset</el-button>
-<!--                TODO New Doctor-->
                 <el-button type="primary" @click="newDoctorVisible = true" :style="{ display: allowNewVisible }">New Doctor</el-button>
               </el-form-item>
             </el-form>
