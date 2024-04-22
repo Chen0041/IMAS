@@ -23,7 +23,7 @@ def login(request):
         user_info = {
             "username": user.login_name,
             "name": user.name,
-            "role": user.role,
+            "type": user.role,
             "phone": user.phone,
             "age": user.age,
             "gender": user.gender,

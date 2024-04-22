@@ -249,10 +249,11 @@ class TrainModelTask(models.Model):
 class UserInfo(models.Model):
     login_name = models.CharField(max_length=20)
     password = models.CharField(max_length=20)
-    role = models.CharField(max_length=1, blank=True, null=True)
+    role = models.IntegerField()
     age = models.IntegerField()
     name = models.CharField(max_length=20, blank=True, null=True)
     gender = models.CharField(max_length=1, blank=True, null=True)
+    marriage = models.CharField(max_length=10, blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
     email = models.CharField(max_length=20, blank=True, null=True)
 

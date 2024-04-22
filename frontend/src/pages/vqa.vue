@@ -14,8 +14,8 @@
 </template>
 
 <script>
-    import NavigationBar from "../components/NavigationBar";
-    import VqaMenu from "../components/VqaMenu";
+    import NavigationBar from "../components/NavigationBar.vue";
+    import VqaMenu from "../component_ori/VqaMenu";
     export default {
         name: "vqa",
         components: {

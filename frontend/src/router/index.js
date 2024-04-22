@@ -1,47 +1,46 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import login from "../pages/login";
-import signUp from "../pages/signUp";
+import Login from "../components/UserInfo/Login";
+import SignUp from "../components/UserInfo/SignUp";
+import UserInfo from "../components/UserInfo/UserInfo";
 
 import deepLearning from "../pages/deepLearning";
-import DeepModels from "../components/DeepLearning/DeepModels";
-import UploadDataset from "../components/DeepLearning/UploadDataset";
-import UploadKg from "../components/DeepLearning/UploadKg";
-import ModelEvaluation from "../components/DeepLearning/ModelEvaluation";
-import AutoSelection from "../components/DeepLearning/AutoSelection";
-import KnowledgeExploration from "../components/DeepLearning/KnowledgeExploration";
+import DeepModels from "../component_ori/DeepLearning/DeepModels";
+import UploadDataset from "../component_ori/DeepLearning/UploadDataset";
+import UploadKg from "../component_ori/DeepLearning/UploadKg";
+import ModelEvaluation from "../component_ori/DeepLearning/ModelEvaluation";
+import AutoSelection from "../component_ori/DeepLearning/AutoSelection";
+import KnowledgeExploration from "../component_ori/DeepLearning/KnowledgeExploration";
 
 import knowledgeGraph from "../pages/knowledgeGraph";
 
 import medicalArchivePreprocess from "../pages/medicalArchivePreprocess";
 
 import medicalCaseDeepSearch from "../pages/medicalCaseDeepSearch"
-import CaseCluster from "../components/MedicalSearch/CaseCluster";
-import CaseSearch from "../components/MedicalSearch/CaseSearch";
-import DeepSearchSubmitQuestions from "../components/MedicalSearch/SubmitQuestions";
-import Uploadmedicalrecords from "../components/MedicalSearch/Uploadmedicalrecords";
+import CaseCluster from "../component_ori/MedicalSearch/CaseCluster";
+import CaseSearch from "../component_ori/MedicalSearch/CaseSearch";
+import DeepSearchSubmitQuestions from "../component_ori/MedicalSearch/SubmitQuestions";
+import Uploadmedicalrecords from "../component_ori/MedicalSearch/Uploadmedicalrecords";
 
 import autoDiagnosis from "../pages/autoDiagnosis";
 import devPage from "../pages/devPage";
-import UploadMedicalRecords from "../components/AutoDiagnosis/Uploadmedicalrecords";
-import MachineDiagnosis from "../components/AutoDiagnosis/MachineDiagnosis";
-import SubmitQuestions from "../components/AutoDiagnosis/SubmitQuestions";
+import UploadMedicalRecords from "../component_ori/AutoDiagnosis/Uploadmedicalrecords";
+import MachineDiagnosis from "../component_ori/AutoDiagnosis/MachineDiagnosis";
+import SubmitQuestions from "../component_ori/AutoDiagnosis/SubmitQuestions";
 
 import QA from "../pages/QA";
-import Questions from "../components/QA/Questions";
-import QuestionDetail from "../components/QA/QuestionDetail";
+import Questions from "../component_ori/QA/Questions";
+import QuestionDetail from "../component_ori/QA/QuestionDetail";
 
 import consult from "../pages/consult";
 
-import my from "../pages/my";
-
 import vqa from "../pages/vqa";
-import consult2 from "../components/Vqa/AI";
-import dataset from "../components/Vqa/dataset";
-import modelVqa from "../components/Vqa/ModelEvaluation";
-import report from "../components/Vqa/report";
-import label from "../components/Vqa/label";
+import consult2 from "../component_ori/Vqa/AI";
+import dataset from "../component_ori/Vqa/dataset";
+import modelVqa from "../component_ori/Vqa/ModelEvaluation";
+import report from "../component_ori/Vqa/report";
+import label from "../component_ori/Vqa/label";
 
 
 
@@ -57,12 +56,12 @@ const router = new Router({
       redirect: '/login'
     }, {
       path: '/login',
-      name: 'login',
-      component: login
+      name: 'Login.vue',
+      component: Login
     }, {
       path: '/signUp',
-      name: 'signUp',
-      component: signUp
+      name: 'SignUp.vue',
+      component: SignUp
     }, {
       path: '/deepLearning',
       component: deepLearning,
@@ -191,9 +190,9 @@ const router = new Router({
         keepAlive: true
       }
     }, {
-      path: '/my',
-      name: 'my',
-      component: my,
+      path: '/userInfo',
+      name: 'UserInfo',
+      component: UserInfo,
       meta: {
         keepAlive: true
       }

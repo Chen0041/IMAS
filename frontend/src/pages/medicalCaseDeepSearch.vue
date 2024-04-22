@@ -14,8 +14,8 @@
 </template>
 
 <script>
-  import NavigationBar from "../components/NavigationBar";
-  import MedicalSearchMenu from "../components/MedicalSearchMenu";
+  import NavigationBar from "../components/NavigationBar.vue";
+  import MedicalSearchMenu from "../component_ori/MedicalSearchMenu";
   export default {
     name: "MedicalSearch",
     components: {

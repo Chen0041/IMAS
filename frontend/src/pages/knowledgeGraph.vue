@@ -69,7 +69,7 @@
   </div>
 </template>
 <script>
-    import NavigationBar from "../components/NavigationBar";
+    import NavigationBar from "../components/NavigationBar.vue";
 
     import * as d3 from 'd3';
     // import d3tooltip from 'd3-tooltip';

@@ -32,7 +32,7 @@
                   {id: '6', path: '/autoDiagnosis', title: 'Automatic Diagnosis'},
                   {id: '7', path: '/QA', title: 'Q&A'},
                   {id: '8', path: '/consult', title: 'Consult'},
-                  {id: '10', path: '/my', title: 'My'}
+                  {id: '10', path: '/userInfo', title: 'UserInfo'}
                 ],
                 isShow: false
             };

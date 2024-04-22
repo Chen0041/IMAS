@@ -14,8 +14,8 @@
 </template>
 
 <script>
-    import NavigationBar from "../components/NavigationBar";
-    import DeepLearningMenu from "../components/DeepLearningMenu";
+    import NavigationBar from "../components/NavigationBar.vue";
+    import DeepLearningMenu from "../component_ori/DeepLearningMenu";
     export default {
         name: "deepLearning",
         components: {

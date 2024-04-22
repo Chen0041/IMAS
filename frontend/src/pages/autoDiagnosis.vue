@@ -14,8 +14,8 @@
 </template>
 
 <script>
-  import NavigationBar from "../components/NavigationBar";
-  import AutoDiagnosisMenu from "../components/AutoDiagnosisMenu";
+  import NavigationBar from "../components/NavigationBar.vue";
+  import AutoDiagnosisMenu from "../component_ori/AutoDiagnosisMenu";
   export default {
     name: "AutoDiagnosis",
     components: {
