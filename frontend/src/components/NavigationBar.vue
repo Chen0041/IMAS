@@ -49,7 +49,7 @@
                 }).then(() => {
                     this.$store.commit('clearUserInfo');
                     this.$router.push('/login');
-                    // window.location.reload();
+                    location.reload();
                     this.$notify({
                         title: 'Success',
                         message: 'Log out successfully! ',

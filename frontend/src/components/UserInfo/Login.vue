@@ -55,7 +55,7 @@
                             message: 'Welcome! ',
                             type: 'success'
                         });
-                        this.$router.push('/vqa');
+                        this.$router.push('/userInfo');
                     }).catch(error => {
                         console.log(error);
                         // alert("Username or password is wrong! ");

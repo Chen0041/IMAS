@@ -86,7 +86,7 @@
         methods: {
             signUp() {
                 this.$axios({
-                    method: 'put',
+                    method: 'post',
                     url: '/user/register',
                     data: {
                         login_name: this.signUpForm.loginName,

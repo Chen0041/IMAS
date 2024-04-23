@@ -86,13 +86,13 @@ export default {
     return {
       newDoctorVisible: false,
       myInfoForm: {
-        name: this.$store.state.user.username,
-        age: this.$store.state.user.age,
-        gender: this.$store.state.user.gender,
-        phone: this.$store.state.user.phone,
-        email: this.$store.state.user.email,
-        marriage: this.$store.state.user.marriage,
-        loginName: '',
+        name: this.$store.state.user.name?this.$store.state.user.name:'',
+        age: this.$store.state.user.age?this.$store.state.user.age:0,
+        gender: this.$store.state.user.gender?this.$store.state.user.gender:'',
+        phone: this.$store.state.user.phone?this.$store.state.user.phone:'',
+        email: this.$store.state.user.email?this.$store.state.user.email:'',
+        marriage: this.$store.state.user.marriage?this.$store.state.user.marriage:'',
+        loginName: this.$store.state.user.username,
         password: '',
         type: this.$store.state.user.type,
         state: ''
@@ -115,11 +115,18 @@ export default {
   methods: {
     signUp() {
       this.$axios({
-        method: 'put',
+        method: 'post',
         url: '/user/register',
         data: {
           login_name: this.newInfoForm.loginName,
-          password: this.newInfoForm.password
+          password: this.newInfoForm.password,
+          name: '',
+          age: 0,
+          gender: '',
+          phone: '',
+          email: '',
+          marriage: '',
+          type: 1
         }
       }).then(res => {
         console.log(res.data);
