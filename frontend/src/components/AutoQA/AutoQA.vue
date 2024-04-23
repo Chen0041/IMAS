@@ -33,10 +33,7 @@
               :http-request="uploadMedicalArchive"
               :auto-upload="false"
           >
-            <el-button slot="trigger" type="primary"
-            >BROWSE
-            </el-button
-            >
+            <el-button slot="trigger" type="primary">BROWSE</el-button>
           </el-upload>
         </el-form-item>
       </el-form>
@@ -79,7 +76,6 @@
                       :disabled="true"
                   >
                     <el-button slot="prepend" @click="openUploadDialog">UPDATE</el-button>
-<!--                    <el-button slot="append" @click="send" style="float: left">SEND</el-button>-->
                   </el-input>
                 </template>
 
@@ -139,7 +135,7 @@
           },
           rules: {
             uploadFile: [
-              {required: true, message: "Please select file", trigger: "change"},
+              // {required: true, message: "Please select file", trigger: "change"},
             ],
             desc: [
               {
@@ -175,44 +171,6 @@
             alert("ERROR! Load Models Failed! ");
           });
         },
-        send() {
-          console.log('send msg.')
-          if (this.input != '') {
-            let outer_div = document.createElement('div');
-            outer_div.style = 'width: 100%; overflow: auto;';
-            let div = document.createElement('div');
-            div.innerHTML = this.input;
-            div.style = 'border: 1px rgb(31, 142, 255) solid; border-radius: 5px; background-color: rgb(31, 142, 255); color: white; float: right; width: fit-content; padding: 6px 10px; margin: 5px; margin-left: 30px;';
-            outer_div.append(div);
-            document.getElementById("chat-history").append(outer_div);
-            document.getElementById("chat-history-box").scrollTop = document.getElementById("chat-history").scrollHeight;
-
-            let params = new FormData();
-            params.append("msg", this.input);
-            this.input = '';
-
-            this.$axios({
-              method: 'post',
-              url: '/consult/online',
-              data: params
-            }).then(res => {
-              // window.console.log(res.data);
-              outer_div = document.createElement('div');
-              outer_div.style = 'width: 100%; overflow: auto;';
-              div = document.createElement('div');
-              div.innerHTML = res.data;
-              div.style = 'border: 1px rgb(235, 237, 240) solid; border-radius: 5px; background-color: rgb(235, 237, 240); float: left; width: fit-content; padding: 6px 10px; margin: 5px; margin-right: 30px;';
-              outer_div.append(div);
-              document.getElementById("chat-history").append(outer_div);
-              setTimeout(function(){
-                console.log("Time out! ");
-              },"2000");
-              document.getElementById("chat-history-box").scrollTop = document.getElementById("chat-history").scrollHeight;
-            }).catch(error => {
-              console.log(error);
-            });
-          }
-        },
         showInfo: function (s) {
 
           if (s) {
@@ -226,23 +184,7 @@
             document.getElementById("info").setAttribute("style", "visibility:'hidden'");
           }
         },
-        // startButton: function (event) {
-        //   if (this.recognizing) {
-        //     this.recognition.stop();
-        //     return;
-        //   }
-        //   this.final_transcript = '';
-        //   this.recognition.lang = 'en-US';
-        //   this.recognition.start();
-        //   this.ignore_onend = false;
-        //   // document.getElementById("final_span").innerHTML = '';
-        //   // document.getElementById("interim_span").innerHTML = '';
-        //   this.micImgPath = 'mic-slash.gif';
-        //   // document.getElementById("start_img").setAttribute("src",'../image/mic-slash.gif')  ;
-        //   this.showInfo('info_allow');
-        //   // this.showButtons('none');
-        //   this.start_timestamp = event.timeStamp;
-        // },
+
         chooseCharacter(value) {
           console.log(value)
           this.characterChosen = value;
@@ -262,14 +204,13 @@
           // console.log((document.getElementById("app").firstChild).
           //     firstChild.lastChild.lastChild.firstChild.lastChild.firstChild.firstChild.firstChild.firstChild.lastChild.firstChild);
           console.log(chat_history_childs)
-          // // document.body.innerHTML = "";
+          // document.body.innerHTML = "";
           for(let i=chat_history_childs.length;i>=0;i--){
             if(chat_history_node.contains(chat_history_childs[i])){
               console.log(chat_history_childs[i])
               chat_history_node.removeChild(chat_history_childs[i])
 
             }
-
             // document.getElementById("app").firstChild.
             //     firstChild.lastChild.lastChild.firstChild.lastChild.firstChild.firstChild.firstChild.firstChild.lastChild.firstChild.removeChild(chat_history_childs[i])
           }
@@ -298,18 +239,6 @@
           this.uploadFormVisible = false;
         },
         uploadMedicalArchive(content) {
-          // window.console.log(this.fileList.length);
-
-          // let div1 = document.createElement("div");
-          // div1.innerHTML = this.characterList[this.characterChosen-1].label;
-          // div1.style =
-          //     "border: 1px rgb(31, 142, 255) solid;  background-color: rgb(31, 142, 255); color: white;  width: fit-content; padding: 6px 10px; margin: 5px; margin-left: 30px;";
-          // outer_div0.append(div1);
-          // document.getElementById("chat-history").append(outer_div0);
-          // document.getElementById(
-          //     "chat-history-box"
-          // ).scrollTop = document.getElementById("chat-history").scrollHeight;
-
           let imgurl = URL.createObjectURL(content.file);
           window.console.log(imgurl);
           console.log(this.uploadForm.desc);
@@ -337,7 +266,6 @@
           outer_div2.append(image);
           // document.createElement("chat-history")
 
-
           document.getElementById("chat-history").append(outer_div);
           document.getElementById(
               "chat-history-box"
@@ -350,29 +278,9 @@
           // console.log(error);
           console.log("modelname:" + this.characterList[this.characterChosen])
 
-
-          //
-          // setTimeout(()=>{
-          //   outer_div = document.createElement("div");
-          //   outer_div.style = "width: 100%; overflow: auto;";
-          //   div = document.createElement("div");
-          //   div.innerHTML = "4 Metacarpal fracture.";
-          //   div.style =
-          //       "border: 1px rgb(235, 237, 240) solid; border-radius: 5px; background-color: rgb(235, 237, 240); float: left; width: fit-content; padding: 6px 10px; margin: 5px; margin-right: 30px;";
-          //   outer_div.append(div);
-          //   document.getElementById("chat-history").append(outer_div);
-          //   setTimeout(function(){
-          //     console.log("Time out! ");
-          //   },"2000");
-          //   document.getElementById(
-          //       "chat-history-box"
-          //   ).scrollTop = document.getElementById("chat-history").scrollHeight;
-          // },6000);
-
-
           this.$axios({
             method: "post",
-            url: "/archive/user/"+this.characterList[this.characterChosen-1].label,//this.characterChosen,
+            url: "/autuQA/"+this.characterList[this.characterChosen-1].label,//this.characterChosen,
             data: params,
           }).then((res) => {
             window.console.log(res);

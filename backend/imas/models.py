@@ -73,7 +73,7 @@ class AuthUserUserPermissions(models.Model):
 class AutoAnswerTask(models.Model):
     user_id = models.IntegerField()
     train_model_id = models.IntegerField()
-    status = models.CharField(max_length=1)
+    status = models.IntegerField()
     question = models.CharField(max_length=1024)
     picture_path = models.CharField(max_length=128, blank=True, null=True)
     answer = models.CharField(max_length=1024, blank=True, null=True)
@@ -88,10 +88,10 @@ class Dataset(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=512)
     data_format = models.CharField(max_length=20)
-    is_labeled = models.CharField(max_length=1)
-    is_single_case = models.CharField(max_length=1)
-    with_picture = models.CharField(max_length=1)
-    status = models.CharField(max_length=1)
+    is_labeled = models.IntegerField()
+    is_single_case = models.IntegerField()
+    with_picture = models.IntegerField()
+    status = models.IntegerField()
     dataset_path = models.CharField(max_length=128, blank=True, null=True)
     after_train_dataset_path = models.CharField(max_length=128, blank=True, null=True)
 
@@ -190,7 +190,7 @@ class Question(models.Model):
     content = models.CharField(max_length=1024)
     picture_path = models.CharField(max_length=128, blank=True, null=True)
     answer = models.CharField(max_length=1024, blank=True, null=True)
-    status = models.CharField(max_length=1)
+    status = models.IntegerField()
 
     class Meta:
         managed = False
@@ -233,7 +233,7 @@ class TrainModelTask(models.Model):
     train_set_proportion = models.IntegerField()
     test_set_proportion = models.IntegerField()
     valid_set_proportion = models.IntegerField()
-    status = models.CharField(max_length=1)
+    status = models.IntegerField()
     after_train_model_path = models.CharField(max_length=128, blank=True, null=True)
     f1 = models.IntegerField(blank=True, null=True)
     accuracy = models.IntegerField(blank=True, null=True)
@@ -252,7 +252,7 @@ class UserInfo(models.Model):
     role = models.IntegerField()
     age = models.IntegerField()
     name = models.CharField(max_length=20, blank=True, null=True)
-    gender = models.CharField(max_length=1, blank=True, null=True)
+    gender = models.CharField(max_length=2, blank=True, null=True)
     marriage = models.CharField(max_length=10, blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
     email = models.CharField(max_length=20, blank=True, null=True)
