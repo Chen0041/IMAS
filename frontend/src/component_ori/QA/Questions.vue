@@ -62,7 +62,7 @@
             <p v-if="stopLoading">No more questions. </p>
             <div v-loading="!stopLoading" element-loading-text="Loading... " element-loading-spinner="el-icon-loading"></div>
           </div>
-          <el-backtop :target="scrollTarget" :bottom="75" :right="75" :visibility-height="500">
+          <el-backtop :bottom="75" :right="75" :visibility-height="500">
             <div class="back-top">TOP</div>
           </el-backtop>
         </div>
@@ -124,8 +124,6 @@
 
                 questionStatus: 1,
                 questionType: 1,
-
-                scrollTarget: '.scrollable-div .el-scrollbar__wrap'
             };
         },
         computed: {

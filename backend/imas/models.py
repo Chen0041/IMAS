@@ -93,7 +93,7 @@ class Dataset(models.Model):
     with_picture = models.IntegerField()
     status = models.IntegerField()
     dataset_path = models.CharField(max_length=128, blank=True, null=True)
-    after_train_dataset_path = models.CharField(max_length=128, blank=True, null=True)
+    preprocessed_dataset_path = models.CharField(max_length=128, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -209,11 +209,12 @@ class SimilarCase(models.Model):
 class SingleDiseaseCaseInfo(models.Model):
     user_id = models.IntegerField()
     dataset_id = models.IntegerField()
+    patient_id = models.IntegerField()
     picture_path = models.CharField(max_length=128, blank=True, null=True)
     disease = models.CharField(max_length=128, blank=True, null=True)
     medicine = models.CharField(max_length=128, blank=True, null=True)
-    diagnosis = models.CharField(max_length=128, blank=True, null=True)
-    symptom = models.CharField(max_length=128, blank=True, null=True)
+    operation = models.CharField(max_length=128, blank=True, null=True)
+    whole_desc = models.CharField(max_length=1024, blank=True, null=True)
 
     class Meta:
         managed = False

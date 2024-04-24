@@ -5,6 +5,10 @@ import Login from "../components/UserInfo/Login";
 import SignUp from "../components/UserInfo/SignUp";
 import UserInfo from "../components/UserInfo/UserInfo";
 
+import DataPreprocessing from "../components/dataPreprocessing/DataPreprocessing";
+import DatasetUpload from "../components/dataPreprocessing/DatasetUpload";
+import PreprocessedData from "../components/dataPreprocessing/PreprocessedData";
+
 import AutoQA from "../components/AutoQA/AutoQA"
 
 import deepLearning from "../pages/deepLearning";
@@ -37,13 +41,6 @@ import QuestionDetail from "../component_ori/QA/QuestionDetail";
 
 import consult from "../pages/consult";
 
-import vqa from "../pages/vqa";
-import consult2 from "../component_ori/Vqa/AI";
-import dataset from "../component_ori/Vqa/dataset";
-import modelVqa from "../component_ori/Vqa/ModelEvaluation";
-import report from "../component_ori/Vqa/report";
-import label from "../component_ori/Vqa/label";
-
 
 
 Vue.use(Router);
@@ -70,6 +67,28 @@ const router = new Router({
         keepAlive: true
       }
     }, {
+      path: '/dataset',
+      component: DataPreprocessing,
+      children: [
+        {
+          path: '',
+          redirect: '/dataset/upload'
+        }, {
+          path: '/dataset/upload',
+          component: DatasetUpload,
+          meta: {
+            keepAlive: true
+          }
+        }, {
+          path: '/dataset/preprocessed',
+          component: PreprocessedData,
+          meta: {
+            keepAlive: true
+          }
+        }
+      ]
+    },
+    {
       path: '/autoQA',
       component: AutoQA
     },
@@ -207,43 +226,6 @@ const router = new Router({
       path: '/devPage',
       name: 'devPage',
       component: devPage,
-    }, {
-      path: '/vqa',
-      // redirect:'/vqa/dataset',
-      component: vqa,
-      children: [
-        {
-          path: '',
-          redirect: 'dataset'
-        }, {
-          path: 'dataset',
-          name: 'dataset',
-          component: dataset,
-          meta: {
-            keepAlive: true
-          }
-        }, {
-          path: 'label',
-          name: 'label',
-          component: label,
-          meta: {
-            keepAlive: true
-          }
-        },
-        {
-          path: 'modelEvaluation',
-          name: 'modelVqa',
-          component: modelVqa
-        }, {
-          path: 'report',
-          name: 'report',
-          component: report
-        }, {
-          path: 'AI',
-          name: 'AI',
-          component: consult2
-        }
-      ]
     }
   ]
 });
