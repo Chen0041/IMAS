@@ -14,16 +14,17 @@ def get_trained_models(request):
     model_entity = TrainModelTask.objects.filter(status=1).values()
     models = []
     for model in model_entity:
-        models.append(model.task_name)
+        models.append(model['task_name'])
     return HttpResponse(json.dumps(models), content_type="application/json")
 
 
 # 上传问题描述和图片，返回答案
 @csrf_exempt
 @require_http_methods(["POST"])
-def upload_medical_archive(request):
-    entity = json.loads(request.body)
-    print(entity)
-    answer = ''
+def upload_medical_archive(request, model_name):
+    # entity = json.loads(request.body)
+    # print(entity)
+    print(model_name)
+    answer = 'Answer'
     # TODO 深度学习模型预测
     return HttpResponse(json.dumps(answer), content_type="application/json")

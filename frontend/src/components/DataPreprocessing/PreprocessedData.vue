@@ -21,18 +21,18 @@
     
     <div>
       <el-table :data="patientIds.slice((currentPage-1)*pageSize,currentPage*pageSize)" style="width: 100%">
-        <el-table-column label="Document ID">
+        <el-table-column label="Document Name">
           <template slot-scope="scope">
-            <span>{{scope.row.patientId}}</span>
+            <span>{{scope.row.patientName}}</span>
 
           </template>
         </el-table-column>
-        <el-table-column label="Picture ID">
+        <el-table-column label="Picture Name">
           <template slot-scope="scope">
             <span>{{scope.row.photoName}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Description">
+        <el-table-column label="Description" width="350">
           <template slot-scope="scope">
             <span>{{scope.row.description}}</span>
           </template>
@@ -45,11 +45,6 @@
         <el-table-column label="Medicine">
           <template slot-scope="scope">
             <span>{{scope.row.medicine}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="Operation">
-          <template slot-scope="scope">
-            <span>{{scope.row.operation}}</span>
           </template>
         </el-table-column>
 
@@ -65,25 +60,30 @@
 
               <div>
                 <el-scrollbar style="height:500px">
-                  <p style="font-size:15px">Description:</p>
-                  <el-input v-model="scope.row.description"  style="width:90%; float:left"></el-input>
-                  <p style="font-size:15px">Disease:</p>
-                  <el-input v-model="scope.row.disease"  style="width:90%; float:left"></el-input>
+                  <el-row>
+                    <p style="font-size:15px">Description:</p>
+                    <el-input v-model="scope.row.description"  style="width:90%; float:left"></el-input>
+                  </el-row>
+                  <el-row>
+                    <p style="font-size:15px">Disease:</p>
+                    <el-input v-model="scope.row.disease"  style="width:90%; float:left"></el-input>
+                  </el-row>
+                  <el-row>
                     <p style="font-size:15px">Medicine:</p>
-                  <el-input v-model="scope.row.medicine"  style="width:90%; float:left"></el-input>
-                    <p style="font-size:15px">Operation:</p>
-                  <el-input v-model="scope.row.operation"  style="width:90%; float:left"></el-input>
-
+                    <el-input v-model="scope.row.medicine"  style="width:90%; float:left"></el-input>
+                  </el-row>
+                  <el-row>
+                    <p style="font-size:15px">Picture:</p>
+                  </el-row>
                   <label>
-                    <img :src="imgPath" width="500px" height="400px" alt=""/>
+                    <img :src="imgSrc" width="500px" height="400px" alt=""/>
                   </label>
                   <p style="text-align:center;">
-                    <button  @click="modifyData(scope.row.patientId,scope.row.photoName,scope.row.description,scope.row.disease,scope.row.medicine,scope.row.operation)">Submit</button>
+                    <el-button type="primary" @click="modifyData(scope.row.patientName,scope.row.photoName,scope.row.description,scope.row.disease,scope.row.medicine)">Submit</el-button>
                   </p>
                 </el-scrollbar>
               </div>
             </el-popover>
-
           </template>
         </el-table-column>
       </el-table>
@@ -113,6 +113,7 @@ export default {
     return {
       characterList_dataset: [],
       imgPath:'',
+      imgSrc:require('../../assets/medical_pic.jpg'),
       characterChosen:"",
       upList:[],
       description:'',
@@ -137,7 +138,7 @@ export default {
     getAllModels(){
       this.$axios({
         method: 'get',
-        url: '/dataset/names',
+        url: '/dataset/preprocessed',
       }).then(res => {
         console.log("all datasets: ")
         console.log(res.data)
@@ -164,22 +165,21 @@ export default {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
     },
-    modifyData(p1,p2,description,disease,medicine,operation){
-      console.log("patientId",p1);
+    modifyData(p1,p2,description,disease,medicine){
+      console.log("patientName",p1);
       console.log("photoName",p2);
       console.log("description", description);
 
       let params = new FormData();
-      params.append("patientId", p1);
-      params.append("photoName", p2);
+      // params.append("patientName", p1);
+      // params.append("photoName", p2);
       params.append("description", description);
       params.append("disease", disease);
       params.append("medicine", medicine);
-      params.append("operation", operation);
 
       this.$axios({
         method: 'post',
-        url: '/dataset/modify/'+this.characterList_dataset[this.characterChosen-1].label,
+        url: '/dataset/'+this.characterList_dataset[this.characterChosen-1].label+'/modify/'+p1,
         data: params
       }).then(res => {
         this.$message({
@@ -197,7 +197,7 @@ export default {
     getPhoto(id){
       console.log("id",id);
       this.photoFile=this.patientIds[id].photoName;
-      this.imgPath = '../../static/'+this.characterList_dataset[this.characterChosen-1].label+ '/' + this.photoFile ;
+      this.imgPath = 'D:/IDEA_Project/IMAS/frontend/public/'+this.characterList_dataset[this.characterChosen-1].label+ '/img/' + this.photoFile ;
 
       console.log("img_path",this.imgPath);
     },
@@ -211,16 +211,31 @@ export default {
         for (let row in res.data) {
           if (res.data.hasOwnProperty(row)) {
             this.patientIds.push({
-              patientId: res.data[row].patient_id,
-              photoName: res.data[row].photo_name,
+              patientName: res.data[row].patient_name,
+              photoName: res.data[row].picture_name,
               medicine:res.data[row].medicine ,
-              operation:res.data[row].operation ,
               disease:res.data[row].disease,
-              description:res.data[row].description
+              description:res.data[row].whole_desc
 
             });
           }
         }
+      }).catch(error => {
+        console.log(error);
+      });
+      this.$axios({
+        method: 'get',
+        url: '/loadPicture/bc5cdr/1.jpg',
+        // data: params
+      }).then(res => {
+        this.$message({
+          message: 'Successfully!',
+          type: 'success',
+          offset:60,
+          showClose: true
+        });
+        // location.reload();
+        // this.message="提交完成";
       }).catch(error => {
         console.log(error);
       });

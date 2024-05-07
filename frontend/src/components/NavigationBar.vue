@@ -24,15 +24,11 @@
         data() {
             return {
                 headerList: [
-                  {id: '1', path: '/dataset', title: 'Data Preprocess'},
-                  {id: '2', path: '/deepLearning', title: 'Deep Learning'},
-                  {id: '3', path: '/medicalArchivePreprocess', title: 'Medical Archive Preprocess'},
-                  {id: '4', path: '/knowledgeGraph', title: 'Knowledge Graph'},
-                  {id: '5', path: '/medicalCaseDeepSearch', title: 'Medical Case Deep Search'},
-                  {id: '6', path: '/autoDiagnosis', title: 'Automatic Diagnosis'},
-                  {id: '7', path: '/QA', title: 'Q&A'},
-                  {id: '8', path: '/autoQA', title: 'Auto QA'},
-                  {id: '10', path: '/userInfo', title: 'User Info'}
+                  {id: '1', path: '/dataset', title: 'Data Preprocess \t'},
+                  {id: '2', path: '/modelTrain', title: 'Model Train \t'},
+                  {id: '3', path: '/autoQA', title: 'Auto QA \t'},
+                  {id: '4', path: '/QA', title: 'QA Platform \t'},
+                  {id: '5', path: '/userInfo', title: 'User Info'}
                 ],
                 isShow: false
             };
@@ -66,18 +62,11 @@
   .el-header {
     position: fixed;
     top: 0;
-
-    /*left: 30px;*/
-    /*right: 30px;*/
-
     left: 0;
     right: 0;
 
     border-bottom: 1px solid #dcdfe6;
-    /*padding-left: 30px;*/
-    padding-left: 0px;
-    /*color: #333;*/
-    /*text-align: center;*/
+    padding-left: 0;
     font-size: 16px;
     background-color: white;
     z-index: 999;

@@ -62,24 +62,24 @@
                     password: [
                         {required: true, message: 'Please input password', trigger: 'blur'}
                     ],
-                    name: [
-                        {required: true, message: 'Please input your name', trigger: 'blur'}
-                    ],
-                    gender: [
-                        {required: true, message: 'Please input your name', trigger: 'blur'}
-                    ],
-                    age: [
-                        {required: true, message: 'Please input your name', trigger: 'blur'}
-                    ],
-                    marriage: [
-                        {required: true, message: 'Please input your name', trigger: 'blur'}
-                    ],
-                    phone: [
-                        {required: true, message: 'Please input your name', trigger: 'blur'}
-                    ],
-                    email: [
-                        {required: true, message: 'Please input your name', trigger: 'blur'}
-                    ],
+                    // name: [
+                    //     {required: true, message: 'Please input your name', trigger: 'blur'}
+                    // ],
+                    // gender: [
+                    //     {required: true, message: 'Please input your name', trigger: 'blur'}
+                    // ],
+                    // age: [
+                    //     {required: true, message: 'Please input your name', trigger: 'blur'}
+                    // ],
+                    // marriage: [
+                    //     {required: true, message: 'Please input your name', trigger: 'blur'}
+                    // ],
+                    // phone: [
+                    //     {required: true, message: 'Please input your name', trigger: 'blur'}
+                    // ],
+                    // email: [
+                    //     {required: true, message: 'Please input your name', trigger: 'blur'}
+                    // ],
                 }
             };
         },
@@ -134,7 +134,7 @@
 #info-head {
   font-size: 32px;
   font-weight: bolder;
-  margin-top: 85px;
+  margin-top: 20px;
 }
 
 #info-content {
@@ -143,7 +143,7 @@
 
 #sign-up-div {
   width: 450px;
-  margin: 150px auto;
+  margin: 50px auto;
   text-align: center;
   border: 1px solid #cccccc;
   border-radius: 5px;
@@ -162,8 +162,8 @@
 }
 
 .el-form-item {
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .el-input {

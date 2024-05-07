@@ -22,7 +22,7 @@
               v-model="uploadForm.desc"
           ></el-input>
         </el-form-item>
-        <el-form-item label="UPDATE" prop="uploadFile">
+        <el-form-item label="Picture" prop="uploadFile">
           <el-upload
               ref="upload"
               action=""
@@ -135,7 +135,7 @@
           },
           rules: {
             uploadFile: [
-              // {required: true, message: "Please select file", trigger: "change"},
+              {required: true, message: "Please select file", trigger: "change"},
             ],
             desc: [
               {
@@ -154,12 +154,11 @@
         getAllModels() {
           this.$axios({
             method: 'get',
-            url: '/models',
+            url: '/autuQA/models',
           }).then(res => {
             for (let i = 0; i < res.data.length; i++) {
               console.log(res.data[i])
               const temp = {"value": i + 1, "label": res.data[i]};
-
               // console.log(temp)
               this.characterList.push(temp)
             }
@@ -172,7 +171,6 @@
           });
         },
         showInfo: function (s) {
-
           if (s) {
             for (let child = document.getElementById("info").firstChild; child; child = child.nextSibling) {
               if (child.style) {
@@ -198,25 +196,25 @@
           // document.removeChild(document.getElementById(
           //     "chat-history-box"
           // ))
-          let chat_history_node=document.getElementById("app").firstChild.
-              firstChild.lastChild.lastChild.firstChild.lastChild.firstChild.firstChild.firstChild.firstChild.lastChild.firstChild;
-          let chat_history_childs=chat_history_node.childNodes;
-          // console.log((document.getElementById("app").firstChild).
-          //     firstChild.lastChild.lastChild.firstChild.lastChild.firstChild.firstChild.firstChild.firstChild.lastChild.firstChild);
-          console.log(chat_history_childs)
-          // document.body.innerHTML = "";
-          for(let i=chat_history_childs.length;i>=0;i--){
-            if(chat_history_node.contains(chat_history_childs[i])){
-              console.log(chat_history_childs[i])
-              chat_history_node.removeChild(chat_history_childs[i])
-
-            }
-            // document.getElementById("app").firstChild.
-            //     firstChild.lastChild.lastChild.firstChild.lastChild.firstChild.firstChild.firstChild.firstChild.lastChild.firstChild.removeChild(chat_history_childs[i])
-          }
-          // document.getElementById("app").firstChild.
-          //     firstChild.lastChild.lastChild.firstChild.lastChild.firstChild.firstChild.firstChild.firstChild.lastChild.firstChild.innerHtml="";
-          console.log(this.characterList[this.characterChosen-1].label)
+          // let chat_history_node=document.getElementById("app").firstChild.
+          //     firstChild.lastChild.lastChild.firstChild.lastChild.firstChild.firstChild.firstChild.firstChild.lastChild.firstChild;
+          // let chat_history_childs=chat_history_node.childNodes;
+          // // console.log((document.getElementById("app").firstChild).
+          // //     firstChild.lastChild.lastChild.firstChild.lastChild.firstChild.firstChild.firstChild.firstChild.lastChild.firstChild);
+          // console.log(chat_history_childs)
+          // // document.body.innerHTML = "";
+          // for(let i=chat_history_childs.length;i>=0;i--){
+          //   if(chat_history_node.contains(chat_history_childs[i])){
+          //     console.log(chat_history_childs[i])
+          //     chat_history_node.removeChild(chat_history_childs[i])
+          //
+          //   }
+          //   // document.getElementById("app").firstChild.
+          //   //     firstChild.lastChild.lastChild.firstChild.lastChild.firstChild.firstChild.firstChild.firstChild.lastChild.firstChild.removeChild(chat_history_childs[i])
+          // }
+          // // document.getElementById("app").firstChild.
+          // //     firstChild.lastChild.lastChild.firstChild.lastChild.firstChild.firstChild.firstChild.firstChild.lastChild.firstChild.innerHtml="";
+          // console.log(this.characterList[this.characterChosen-1].label)
         },
         linebreak: function (s) {
           return s.replace(this.two_line, "<p></p>").replace(this.one_line, "<br>");
@@ -280,7 +278,8 @@
 
           this.$axios({
             method: "post",
-            url: "/autuQA/"+this.characterList[this.characterChosen-1].label,//this.characterChosen,
+            // url: "/autuQA/"+this.characterList[this.characterChosen-1].label,//this.characterChosen,
+            url: "/autuQA/Train_test",
             data: params,
           }).then((res) => {
             window.console.log(res);
@@ -474,7 +473,7 @@
   }
 
   #chat-div {
-    width: 70%;
+    width: 80%;
     height: 100%;
     margin-right: 0;
   }

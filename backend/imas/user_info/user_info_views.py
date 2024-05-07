@@ -13,7 +13,6 @@ from imas.models import UserInfo
 @require_http_methods(["POST"])
 def login(request):
     login_vo = json.loads(request.body)
-    # print(login_vo)
     if login_vo is None or login_vo['login_name'] == '' or login_vo['password'] == '':
         return HttpResponse('error username or password', status=401, content_type='application/json')
     else:

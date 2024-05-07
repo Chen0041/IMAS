@@ -55,7 +55,7 @@
                             message: 'Welcome! ',
                             type: 'success'
                         });
-                        this.$router.push('/userInfo');
+                        this.$router.push('/dataset');
                     }).catch(error => {
                         console.log(error);
                         // alert("Username or password is wrong! ");

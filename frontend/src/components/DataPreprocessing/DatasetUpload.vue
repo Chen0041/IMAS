@@ -13,7 +13,7 @@
     <el-dialog
       title="Generate Dataset"
       :visible.sync="addDatasetFormVisible"
-      width="640px"
+      width="750px"
       append-to-body
       :close-on-click-modal="false"
       :close-on-press-escape="false"
@@ -55,7 +55,7 @@
           <el-upload class="upload-demo"
                      ref="upload"
                      multiple
-                     accept=".png, .jpg, .jpeg"
+                     accept=".zip"
                      :http-request="uploadDataset"
                      :file-list="fileList"
                      :show-file-list="true"
@@ -73,8 +73,9 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-checkbox v-model="addDatasetForm.is_labeled">is_labeled</el-checkbox>
-        <el-checkbox v-model="addDatasetForm.is_single_case" style="margin-right: 30px">is_single_case</el-checkbox>
-        <el-button type="text" @click="open" style="margin-right: 30px">Readme</el-button>
+        <el-checkbox v-model="addDatasetForm.is_single_case" style="margin-right: 20px">is_single_case</el-checkbox>
+        <el-checkbox v-model="addDatasetForm.need_OCR" style="margin-right: 20px">need_OCR</el-checkbox>
+        <el-button type="text" @click="open" style="margin-right: 20px">Readme</el-button>
         <el-button type="primary" @click="upload">Submit</el-button>
         <el-button @click="cancelAddDataset">Cancel</el-button>
       </div>
@@ -133,7 +134,6 @@
                   align="center"
                 >
                   <template slot-scope="scope">
-
                       <el-tag
                         slot="reference"
                         :type="scope.row.status ? 'success' : 'danger'"
@@ -152,14 +152,20 @@
                 >
                   <template slot-scope="scope">
                     <div v-if="scope.row.status">
-
                       <el-button
                         type="primary"
                         plain
                         size="small"
                         @click="goDownload(scope.row.name)"
-                        >Download</el-button
-                      >
+                        >Download
+                      </el-button>
+                      <el-button
+                        type="danger"
+                        plain
+                        size="small"
+                        @click="goDelete(scope.row.name)"
+                        >Delete
+                      </el-button>
                     </div>
                     <div v-else>
                       <el-button
@@ -201,6 +207,7 @@ export default {
         ratio:[4,8],
         is_single_case: false,
         is_labeled: false,
+        need_OCR: false,
       },
       rules: {
         name: [
@@ -281,12 +288,12 @@ export default {
     goDownload(dataset){
       this.$axios({
         method: 'get',
-        url: '/downloadVQAs/' + dataset,
+        url: '/dataset/download/' + dataset,
       }).then(res => {
         console.log(res.data);
         const content=res.data;
         const blob=new Blob([content]);
-        const fileName='VQA.csv';
+        const fileName='Preprocessed_data.csv';
         if('download' in document.createElement('a')){
           const link=document.createElement('a')
           link.download=fileName
@@ -301,14 +308,39 @@ export default {
         }
       }).catch(error => {
         console.log(error);
-        alert("ERROR! Download VQAs Failed! ");
+        alert("ERROR! Download Preprocessed Data Failed! ");
+      });
+    },
+    goDelete(dataset){
+      this.$axios({
+        method: 'get',
+        url: '/dataset/delete/' + dataset,
+      }).then(res => {
+        console.log(res.data);
+        const content=res.data;
+        const blob=new Blob([content]);
+        const fileName='Preprocessed_data.csv';
+        if('download' in document.createElement('a')){
+          const link=document.createElement('a')
+          link.download=fileName
+          link.style.display='none'
+          link.href=URL.createObjectURL(blob)
+          document.body.appendChild(link)
+          link.click()
+          URL.revokeObjectURL(link.href)
+          document.body.removeChild(link)
+        }else{
+          navigator.msSaveBlob(blob,fileName)
+        }
+      }).catch(error => {
+        console.log(error);
+        alert("ERROR! Download Preprocessed Data Failed! ");
       });
     },
     loadDataset() {
       this.$axios({
         method: "get",
-        url: "/dataSets",
-        // url: "/singleTest",
+        url: "/datasets",
       })
         .then((res) => {
           console.log(res.data);
@@ -341,10 +373,12 @@ export default {
       params.append("description", this.addDatasetForm.description);
       params.append("is_single_case", this.addDatasetForm.is_single_case);
       params.append("is_labeled", this.addDatasetForm.is_labeled);
+      params.append("need_OCR", this.addDatasetForm.need_OCR);
       params.append("train", this.addDatasetForm.ratio[0]);
       params.append("valid", this.addDatasetForm.ratio[1]-this.addDatasetForm.ratio[0]);
       params.append("test", 10-this.addDatasetForm.ratio[1]);
       params.append("file", content.file);
+      console.log(params)
       this.$axios({
         method: "post",
         url: "/dataset/upload",
@@ -382,7 +416,7 @@ export default {
       DevSet.submit();
     },
     cancelUploadDataset() {
-      this.$router.push('/vqa/label');
+      this.$router.push('/dataset/preprocessed');
 
       this.closeUploadDatasetForm();
       this.loadDataset();
