@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .user_info import user_info_views
-from .data_preprocessing import upload_dataset_views,preprocessed_data_views
+from .data_preprocessing import upload_dataset_views, preprocessed_data_views
 from .model_train import train_task_views, report_views
 from .auto_QA import auto_QA_views
 from .QA_platform import QA_platform_views
@@ -23,7 +23,7 @@ urlpatterns = [
     path("dataset/<str:dataset>/cases", preprocessed_data_views.get_cases),
     path("dataset/<str:dataset>/modify/<str:patient_name>", preprocessed_data_views.modify_case),
     path("loadPicture/<str:dataset>/<str:picture_name>", preprocessed_data_views.get_picture),
-
+ 
     # model_train
     path("model/datasetsLabeled",  train_task_views.get_labeled_datasets),
     path("model/category",  train_task_views.get_model_categories),

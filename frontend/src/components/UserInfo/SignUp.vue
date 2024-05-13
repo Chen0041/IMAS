@@ -102,11 +102,19 @@
                     }
                 }).then(res => {
                     console.log(res.data);
-                    alert("Sign up successfully! Now go to LOG IN! ");
+                    this.$message({
+                      type: 'success',
+                      message: "Sign up successfully! Now go to login in! ",
+                      showClose: true
+                    });
                     this.$router.push('/login');
                 }).catch(error => {
                     console.log(error);
-                    alert("Sign up ERROR! ");
+                    this.$message({
+                      type: 'error',
+                      message: "Sign up error, please change login name! ",
+                      showClose: true
+                    });
                 });
             },
             logIn() {

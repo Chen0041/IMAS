@@ -146,7 +146,7 @@ export default {
           data: {
             login_name: this.myInfoForm.loginName,
             password: this.myInfoForm.password,
-            age: this.myInfoForm.age,
+            age: this.myInfoForm.age?this.myInfoForm.age:0,
             name: this.myInfoForm.name,
             gender: this.myInfoForm.gender,
             phone: this.myInfoForm.phone,

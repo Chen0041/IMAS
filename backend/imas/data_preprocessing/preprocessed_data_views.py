@@ -26,9 +26,9 @@ def get_cases(request, dataset):
     cases = list(SingleDiseaseCaseInfo.objects.filter(dataset_id=dataset_id).values())
     # print(cases)
     if len(cases) == 0:
-        return HttpResponse(json.dumps(cases), content_type="application/json", status=400)
+        return HttpResponse('No cases', status=500, content_type="application/json")
     else:
-        return HttpResponse(json.dumps(cases), content_type="application/json", status=200)
+        return HttpResponse(json.dumps(cases), content_type="application/json")
 
 
 @csrf_exempt
