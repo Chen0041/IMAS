@@ -166,13 +166,14 @@ def auto_preprocess(dst_path, is_labeled, is_single_case, need_OCR, dataset):
                     img_name = row[0]
                     txt_name = row[1]
                     if not is_single_case:
-                        img_name = 'img/' + img_name
-                        txt_name = 'txt/' + txt_name
+                        txt_path = os.path.join(dst_path, 'txt/')
+                    else:
+                        txt_path = dst_path
                     if need_OCR:
-                        txt_path = os.path.join(dst_path, txt_name)
+                        txt_path = os.path.join(txt_path, txt_name)
                         whole_desc = call_OCR(txt_path)
                     else:
-                        txt_path = os.path.join(dst_path, txt_name)
+                        txt_path = os.path.join(txt_path, txt_name)
                         with open(txt_path, 'r', encoding='utf-8') as f:
                             whole_desc = f.read()
                     whole_desc = remove_privacy(whole_desc)

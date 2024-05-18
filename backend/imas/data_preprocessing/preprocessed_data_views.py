@@ -48,6 +48,9 @@ def modify_case(request, dataset, patient_name):
 @csrf_exempt
 @require_http_methods(["GET"])
 def get_picture(request, dataset, picture_name):
+    is_single_case = Dataset.objects.get(name=dataset).is_single_case
+    if is_single_case == 0:
+        picture_name = 'img/' + picture_name
     img_path = 'datasets/' + dataset + '/' + picture_name
     img_path = os.path.join(whole_project_path, img_path)
     image_data = open(img_path, "rb").read()

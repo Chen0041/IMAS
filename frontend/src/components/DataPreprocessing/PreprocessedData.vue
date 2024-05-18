@@ -21,7 +21,7 @@
     
     <div>
       <el-table :data="patientIds.slice((currentPage-1)*pageSize,currentPage*pageSize)" style="width: 100%">
-        <el-table-column label="Document Name">
+        <el-table-column label="Text Name">
           <template slot-scope="scope">
             <span>{{scope.row.patientName}}</span>
 
@@ -56,7 +56,7 @@
                 width="1000"
                 trigger="click"
                 content="">
-              <el-button slot="reference" @click="getPhoto(scope.$index)">Edit</el-button>
+              <el-button slot="reference" @click="getPhoto(scope.row.photoName)">Edit</el-button>
 
               <div>
                 <el-scrollbar style="height:500px">
@@ -76,7 +76,7 @@
                     <p style="font-size:15px">Picture:</p>
                   </el-row>
                   <label>
-                    <img :src="imgSrc" width="500px" height="400px" alt=""/>
+                    <img :src="imgSrc" alt=""/>
                   </label>
                   <p style="text-align:center;">
                     <el-button type="primary" @click="modifyData(scope.row.patientName,scope.row.photoName,scope.row.description,scope.row.disease,scope.row.medicine)">Submit</el-button>
@@ -112,16 +112,10 @@ export default {
   data() {
     return {
       characterList_dataset: [],
-      imgPath:'',
       imgSrc:require('../../assets/medical_pic.jpg'),
       characterChosen:"",
-      upList:[],
       description:'',
-      boneName:'',
-      photoFile:'',
-      dias:[],
       patientIds:[],
-      // pngFile:'1.png', No Usage
       currentPage: 1, // 当前页码
       total: 20, // 总条数
       pageSize: 100 ,// 每页的数据条数
@@ -140,8 +134,8 @@ export default {
         method: 'get',
         url: '/dataset/preprocessed',
       }).then(res => {
-        console.log("all datasets: ")
-        console.log(res.data)
+        // console.log("all datasets: ")
+        // console.log(res.data)
         for(let i=0;i<res.data.length;i++){
           // console.log(res.data[i])
           let temp={"value":i+1,"label":res.data[i]}
@@ -194,12 +188,21 @@ export default {
         console.log(error);
       });
     },
-    getPhoto(id){
-      console.log("id",id);
-      this.photoFile=this.patientIds[id].photoName;
-      this.imgPath = 'D:/IDEA_Project/IMAS/frontend/public/'+this.characterList_dataset[this.characterChosen-1].label+ '/img/' + this.photoFile ;
-
-      console.log("img_path",this.imgPath);
+    getPhoto(photo_name){
+      this.$axios({
+        method: 'get',
+        url: '/loadPicture/'+this.characterList_dataset[this.characterChosen-1].label+'/'+photo_name,
+        responseType:'blob'
+        // data: params
+      }).then(res => {
+        // console.log(res.data)
+        let blob = new Blob([res.data], {
+          type: "image/png",
+        });
+        this.imgSrc=window.URL.createObjectURL(blob)
+      }).catch(error => {
+        console.log(error);
+      });
     },
     getAllPatients(){
       this.$axios({
@@ -220,22 +223,6 @@ export default {
             });
           }
         }
-      }).catch(error => {
-        console.log(error);
-      });
-      this.$axios({
-        method: 'get',
-        url: '/loadPicture/bc5cdr/1.jpg',
-        // data: params
-      }).then(res => {
-        this.$message({
-          message: 'Successfully!',
-          type: 'success',
-          offset:60,
-          showClose: true
-        });
-        // location.reload();
-        // this.message="提交完成";
       }).catch(error => {
         console.log(error);
       });
