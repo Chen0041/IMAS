@@ -62,7 +62,7 @@
                 <el-scrollbar style="height:500px">
                   <el-row>
                     <p style="font-size:15px">Description:</p>
-                    <el-input v-model="scope.row.description"  style="width:90%; float:left"></el-input>
+                    <el-input v-model="scope.row.description" type="textarea" style="width:90%; float:left"></el-input>
                   </el-row>
                   <el-row>
                     <p style="font-size:15px">Disease:</p>

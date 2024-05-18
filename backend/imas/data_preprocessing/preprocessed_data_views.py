@@ -1,9 +1,11 @@
 import json
+import os
 
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
+from backend.settings import whole_project_path
 from imas.models import Dataset, SingleDiseaseCaseInfo
 
 
@@ -46,4 +48,7 @@ def modify_case(request, dataset, patient_name):
 @csrf_exempt
 @require_http_methods(["GET"])
 def get_picture(request, dataset, picture_name):
-    return HttpResponse("success", content_type="application/json")
+    img_path = 'datasets/' + dataset + '/' + picture_name
+    img_path = os.path.join(whole_project_path, img_path)
+    image_data = open(img_path, "rb").read()
+    return HttpResponse(image_data, content_type="image/png")

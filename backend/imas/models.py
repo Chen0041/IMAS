@@ -84,9 +84,9 @@ class AutoAnswerTask(models.Model):
 
 
 class Dataset(models.Model):
+    user_id = models.IntegerField()
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=512)
-    data_format = models.CharField(max_length=20)
     is_labeled = models.IntegerField()
     is_single_case = models.IntegerField()
     need_OCR = models.IntegerField()
@@ -94,8 +94,6 @@ class Dataset(models.Model):
     test_set_proportion = models.IntegerField()
     valid_set_proportion = models.IntegerField()
     status = models.IntegerField()
-    dataset_path = models.CharField(max_length=128, blank=True, null=True)
-    preprocessed_dataset_path = models.CharField(max_length=128, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -210,11 +208,11 @@ class SimilarCase(models.Model):
 
 class SingleDiseaseCaseInfo(models.Model):
     dataset_id = models.IntegerField()
-    patient_name = models.CharField(max_length=32, blank=True, null=True)
-    picture_name = models.CharField(max_length=32, blank=True, null=True)
-    disease = models.CharField(max_length=128, blank=True, null=True)
-    medicine = models.CharField(max_length=128, blank=True, null=True)
-    whole_desc = models.CharField(max_length=1024, blank=True, null=True)
+    patient_name = models.CharField(max_length=32, blank=True)
+    picture_name = models.CharField(max_length=32, blank=True)
+    whole_desc = models.CharField(max_length=1024, blank=True)
+    disease = models.CharField(max_length=512, blank=True, null=True)
+    medicine = models.CharField(max_length=512, blank=True, null=True)
 
     class Meta:
         managed = False

@@ -54,12 +54,6 @@
               <div class="el-upload__text">drop files here,or <em>click here to upload files</em></div>
             </el-upload>
           </el-form-item>
-          <!--        <el-form-item label="Type" prop="questionType">-->
-          <!--          <el-radio-group v-model="newQuestionForm.questionType">-->
-          <!--            <el-radio label="1">Simple choice</el-radio>-->
-          <!--            <el-radio label="2">Detailed answer</el-radio>-->
-          <!--          </el-radio-group>-->
-          <!--        </el-form-item>-->
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" @click="addNewQuestion">Submit</el-button>
@@ -171,7 +165,7 @@
           >
             <template slot-scope="scope">
               <el-button type="danger" size="mini" @click="deleteQuestion(scope.row.id)">Delete</el-button>
-              <el-button type="primary" size="mini" @click="answerFormVisible = true">Answer</el-button>
+              <el-button type="primary" size="mini" @click="answerFormVisible = true" :style="{ display: allowAnswer}">Answer</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -190,6 +184,7 @@
         },
         data() {
             return {
+              allowAnswer: this.$store.state.user.type === 0?'none':'',
               imgSrc1: require('../../assets/medical_pic.jpg'),
               imgSrc2: require('../../assets/medical_pic2.jpg'),
               fileList:[],

@@ -40,7 +40,7 @@
                     <el-input v-model="myInfoForm.loginName"></el-input>
                   </el-form-item>
                   <el-form-item label="password" prop="password">
-                    <el-input v-model="myInfoForm.password"></el-input>
+                    <el-input v-model="myInfoForm.password" show-password></el-input>
                   </el-form-item>
                   <el-form-item label="Name" prop="name">
                     <el-input v-model="myInfoForm.name"></el-input>
@@ -93,7 +93,7 @@ export default {
         email: this.$store.state.user.email?this.$store.state.user.email:'',
         marriage: this.$store.state.user.marriage?this.$store.state.user.marriage:'',
         loginName: this.$store.state.user.username,
-        password: '',
+        password: this.$store.state.user.password,
         type: this.$store.state.user.type,
         state: ''
       },

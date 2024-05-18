@@ -74,7 +74,8 @@
       <div slot="footer" class="dialog-footer">
         <el-checkbox v-model="addDatasetForm.is_labeled">is_labeled</el-checkbox>
         <el-checkbox v-model="addDatasetForm.is_single_case" style="margin-right: 20px">is_single_case</el-checkbox>
-        <el-checkbox v-model="addDatasetForm.need_OCR" style="margin-right: 20px">need_OCR</el-checkbox>
+        <el-checkbox v-if="addDatasetForm.is_labeled" v-model="addDatasetForm.need_OCR" disabled style="margin-right: 20px">need_OCR</el-checkbox>
+        <el-checkbox v-else v-model="addDatasetForm.need_OCR" style="margin-right: 20px">need_OCR</el-checkbox>
         <el-button type="text" @click="open" style="margin-right: 20px">Readme</el-button>
         <el-button type="primary" @click="upload">Submit</el-button>
         <el-button @click="cancelAddDataset">Cancel</el-button>
@@ -96,7 +97,7 @@
       </el-steps>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="cancelUploadDataset">Finish</el-button>
+        <el-button @click="goNextStep">Finish</el-button>
       </div>
     </el-dialog>
 
@@ -107,6 +108,7 @@
             <div class="item-list">
               <el-table
                 ref="datasetTable"
+                :row-class-name=datasetStatus
                 :data="datasetTableData"
                 :max-height="datasetTableHeight"
               >
@@ -133,16 +135,6 @@
                   min-width="15%"
                   align="center"
                 >
-                  <template slot-scope="scope">
-                      <el-tag
-                        slot="reference"
-                        :type="scope.row.status ? 'success' : 'danger'"
-                        @click="showMsg(scope.row.status)"
-                        >{{
-                          scope.row.status ? "Available" : "Not Available"
-                        }}</el-tag
-                      >
-                  </template>
                 </el-table-column>
                 <el-table-column
                   prop="operations"
@@ -151,7 +143,7 @@
                   align="center"
                 >
                   <template slot-scope="scope">
-                    <div v-if="scope.row.status">
+                    <div v-if="scope.row.status=='success'">
                       <el-button
                         type="primary"
                         plain
@@ -175,6 +167,13 @@
                           @click="goDownload(scope.row.name)"
                           disabled
                       >Download</el-button>
+                      <el-button
+                          type="danger"
+                          plain
+                          size="small"
+                          @click="goDelete(scope.row.name)"
+                      >Delete
+                      </el-button>
                     </div>
                   </template>
                 </el-table-column>ratio
@@ -262,6 +261,17 @@ export default {
     };
   },
   methods: {
+    datasetStatus({row}, rowIndex) {
+      if (row.status == 'success'){
+        return 'success-row';
+      }
+      else if (row.status == 'processing'){
+        return 'warning-row';
+      }
+      else{
+        return 'danger-row'
+      }
+    },
     handleRemove(file,fileList) {
       console.log(file,fileList);
     },
@@ -313,28 +323,21 @@ export default {
     },
     goDelete(dataset){
       this.$axios({
-        method: 'get',
+        method: 'delete',
         url: '/dataset/delete/' + dataset,
+        data: {
+          login_name: this.$store.state.user.username,
+        },
       }).then(res => {
-        console.log(res.data);
-        const content=res.data;
-        const blob=new Blob([content]);
-        const fileName='Preprocessed_data.csv';
-        if('download' in document.createElement('a')){
-          const link=document.createElement('a')
-          link.download=fileName
-          link.style.display='none'
-          link.href=URL.createObjectURL(blob)
-          document.body.appendChild(link)
-          link.click()
-          URL.revokeObjectURL(link.href)
-          document.body.removeChild(link)
-        }else{
-          navigator.msSaveBlob(blob,fileName)
-        }
+        this.$notify({
+          message: 'Successfully delete! ',
+          type: 'success',
+          showClose: true
+        });
+        location.reload();
       }).catch(error => {
         console.log(error);
-        alert("ERROR! Download Preprocessed Data Failed! ");
+        alert("Delete error! ");
       });
     },
     loadDataset() {
@@ -354,10 +357,17 @@ export default {
         });
     },
     open() {
-      alert("1. zip文件中包含医学图像和对应病例描述，分别用图片（*.jpg, *.jpeg, *.png）和文本（*.txt, *.csv）表示。 \n " +
-          "2. 用relationship.csv文件标示图片和文本的对应，每列分别为：图片文件命名、文本/表格文件命名，不包含表头。 \n " +
-          "3. 若选中is_labeled，要求病例描述使用*.csv格式，每列分别为：图片名、疾病、药物、手术，不包含表头。否则使用*.txt格式。 \n " +
-          "4. 若选中is_single_case，则图片、文本、对应关系三个文件均置于根目录下。否则创建两个文件夹，分别命名为img和txt，存放图片和文本文件。")
+      this.$notify({
+        title: 'File format',
+        dangerouslyUseHTMLString: true,
+        message: "1. zip文件中包含医学图像和对应病例描述，分别用图片（*.jpg, *.jpeg, *.png）和文本（*.txt, *.csv等）表示。 <br/> " +
+            "2. 用relationship.csv文件标示图片和文本的对应。 <br/> " +
+            "3. 若选中is_labeled，relationship.csv文件每列分别为：图片文件名、病例名、图片描述、疾病、药物，不再上传文本。反之，每列分别为：图片文件名、文本文件名。含扩展名，不含表头。 <br/> " +
+            "4. 若选中is_single_case，则图片、文本（如有需要）、对应关系三个文件均置于根目录下。否则创建两个文件夹，分别命名为img和txt，存放图片和文本文件。 <br/> " +
+            "5. 若选中need_OCR，则文本描述可以用图片形式表示。",
+        type: 'info',
+        showClose: true
+      });
     },
     newDatasetDialog() {
       this.stepsActive = 0;
@@ -369,6 +379,7 @@ export default {
     },
     uploadDataset(content) {
       let params = new FormData();
+      params.append("login_name", this.$store.state.user.username);
       params.append("name", this.addDatasetForm.name);
       params.append("description", this.addDatasetForm.description);
       params.append("is_single_case", this.addDatasetForm.is_single_case);
@@ -385,9 +396,8 @@ export default {
         data:params,
       })
         .then((res) => {
-          this.addDatasetFormVisible=true
           console.log(res.data);
-          this.closeAddDatasetForm();
+          this.addDatasetFormVisible = false;
           this.loadDataset();
           this.$notify({
             title: "Success",
@@ -398,6 +408,10 @@ export default {
         })
         .catch((error) => {
           console.log(error);
+          this.$notify({
+            message: "Upload dataset error, please check console for detail! ",
+            type: "error",
+          });
         });
     },
     cancelAddDataset() {
@@ -407,19 +421,9 @@ export default {
       this.addDatasetFormVisible = false;
       this.$refs["addDatasetForm"].resetFields();
     },
-    submitUploadTestSetFile() {
-      this.uploadDatasetForm.type = "test";
-      this.$refs.uploadTestSet.submit();
-    },
-    submitUploadDevSetFile() {
-      this.uploadDatasetForm.type = "dev";
-      DevSet.submit();
-    },
-    cancelUploadDataset() {
+    goNextStep() {
       this.$router.push('/dataset/preprocessed');
-
-      this.closeUploadDatasetForm();
-      this.loadDataset();
+      this.uploadDatasetFormVisible = false;
     },
     openUploadDatasetForm(datasetId, trainSet, testSet, devSet) {
       this.stepsActive = 1;
@@ -428,28 +432,6 @@ export default {
       this.testSetExist = testSet !== "";
       this.devSetExist = devSet !== "";
       this.uploadDatasetFormVisible = true;
-    },
-    closeUploadDatasetForm() {
-      this.uploadDatasetFormVisible = false;
-      this.$refs["uploadDatasetForm"].resetFields();
-      this.trainSetFileList = [];
-      this.testSetFileList = [];
-      this.devSetFileList = [];
-    },
-    showMsg(status) {
-      if (status) {
-        this.$notify({
-          title: "Success",
-          message: "Dataset is available! Begin a TASK or RESET dataset! ",
-          type: "success",
-          // offset: 200
-        });
-      } else {
-        this.$notify.warning({
-          title: "Warning",
-          message: "Dataset is not available! Please UPLOAD first! ",
-        });
-      }
     },
   },
   created() {
@@ -468,6 +450,18 @@ export default {
   },
 };
 </script>
+
+<style>
+.el-table .warning-row {
+  background: oldlace;
+}
+.el-table .success-row {
+  background: #f0f9eb;
+}
+.el-table .danger-row {
+  background: #FF00000D;
+}
+</style>
 
 <style scoped>
 .el-main {

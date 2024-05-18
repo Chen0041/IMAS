@@ -14,7 +14,7 @@ urlpatterns = [
     path("user/modify", user_info_views.user_modify),
 
     # data_preprocessing
-    path("dataset/download/<str:dataset>", upload_dataset_views.download_dataset),
+    path("dataset/download/<dataset>", upload_dataset_views.download_dataset),
     path("dataset/delete/<str:dataset>", upload_dataset_views.delete_dataset),
     path("datasets", upload_dataset_views.get_datasets),
     path("dataset/upload", upload_dataset_views.upload_dataset),

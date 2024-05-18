@@ -23,6 +23,7 @@ def login(request):
         token = jwt.encode({"login_name": login_vo['login_name']}, "secret", algorithm="HS256")
         user_info = {
             "username": user.login_name,
+            "password": user.password,
             "name": user.name,
             "type": user.role,
             "phone": user.phone,
