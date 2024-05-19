@@ -27,7 +27,7 @@ urlpatterns = [
     # model_train
     path("model/datasetsLabeled",  train_task_views.get_labeled_datasets),
     path("model/category",  train_task_views.get_model_categories),
-    path("model/train/<str:model_name>",  train_task_views.creat_train_task),
+    path("model/train/<int:model_id>",  train_task_views.creat_train_task),
 
     path("model/reports", report_views.get_report),
     path("model/reports/download", report_views.download_reports),

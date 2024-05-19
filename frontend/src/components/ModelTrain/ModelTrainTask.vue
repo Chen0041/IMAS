@@ -23,7 +23,7 @@
           <el-select v-model="characterChosen"
                      @change="chooseDataset">
             <el-option
-                v-for="item in options"
+                v-for="item in datasets"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
@@ -137,100 +137,51 @@
 export default {
   methods: {
     loadDeepModels() {
-      this.deepModelsOptions.push({
-        value: 0,
-        label: 'Joint Embedding Models',
-        children: [{
-            value: 0,
-            label: 'ODL'
-        }]
+      this.$axios({
+        method: 'get',
+        url: '/model/category',
+      }).then(res => {
+        for (let category in res.data) {
+          if (res.data.hasOwnProperty(category)) {
+            let childModels = [];
+            let models = res.data[category].models;
+            for (let model in models) {
+              if (models.hasOwnProperty(model)) {
+                childModels.push({
+                  value: models[model].id,
+                  label: models[model].name
+                });
+              }
+            }
+            this.deepModelsOptions.push({
+              value: res.data[category].id,
+              label: res.data[category].category,
+              children: childModels
+            });
+          }
+        }
+      }).catch(error => {
+        console.log(error);
       });
-      this.deepModelsOptions.push({
-        value: 1,
-        label: 'Encoder-Decoder Models',
-        children: [
-          {value: 0, label:'NLM'},
-          {value: 1, label:'VGG-Seq2Seq'}
-        ]
-      });
-      this.deepModelsOptions.push({
-        value: 2,
-        label: 'Knowledge Embedding Models',
-        children: [{
-          value: 0,
-          label: 'ArticleNet'
-        }]
-      });
-      this.deepModelsOptions.push({
-        value: 3,
-        label: 'Attention-based Models',
-        children: [{
-          value: 0,
-          label: 'MMBERT'
-        }]
-      });
-      // this.$axios({
-      //   method: 'get',
-      //   url: '/model/category',
-      // }).then(res => {
-      //   // console.log(res.data);
-      //   for (let category in res.data) {
-      //     if (res.data.hasOwnProperty(category)) {
-      //       let childModels = [];
-      //       let models = res.data[category].models;
-      //       for (let model in models) {
-      //         if (models.hasOwnProperty(model)) {
-      //           childModels.push({
-      //             value: models[model].id,
-      //             label: models[model].name
-      //           });
-      //         }
-      //       }
-      //       this.deepModelsOptions.push({
-      //         value: res.data[category].id,
-      //         label: res.data[category].name,
-      //         children: childModels
-      //       });
-      //     }
-      //   }
-      // }).catch(error => {
-      //   console.log(error);
-      // });
     },
     selectModel(value) {
-      console.log(value);
-      this.selectedModel=value.label
-      // value[value.length-1] modelId
-
-      // console.log(value[value.length-1]);
-      // this.getModelInfo(value[value.length-1]);
-      // this.modelInfoFormVisible = true;
+      this.selectedModelId=value[1]
     },
     getAllDatasets(){
-      // options: [
-      //   { value: 1, label: "VQA-Med-2019" },
-      //   { value: 2, label: "VQA-RAD" },
-      //   { value: 3, label: "MVQA(Our)" },
-      // ],
       this.$axios({
         method: 'get',
         url: '/model/datasetsLabeled',
       }).then(res => {
-        console.log("all datasets: ")
-        console.log(res.data)
         for(let i=0;i<res.data.length;i++){
-          // console.log(res.data[i])
           let temp={"value":i+1,"label":res.data[i]}
-
-          // console.log(temp)
-          this.options.push(temp)
+          this.datasets.push(temp)
         }
-        console.log(this.options)
-        // this.characterChosen=this.characterList[0].label;
-
       }).catch(error => {
         console.log(error);
-        // alert("ERROR! Load Models Failed! ");
+        this.$notify({
+          message: 'ERROR! Load Models Failed! ',
+          type: 'error'
+        });
       });
     },
     chooseEmbedding(value){
@@ -249,7 +200,6 @@ export default {
       this.choosenBatchsize=value;
     },
     chooseDataset(value) {
-      // console.log(label);
       this.characterChosen=value;
     },
     tableRowClassName({ row, rowIndex }) {
@@ -263,12 +213,9 @@ export default {
     trainModel(){
       this.$notify({
         title: 'Success',
-        // message: 'Begin training '+this.selectedModel+' model. ',
-        message: 'Start Train! ',
+        message: 'Begin training. ',
         type: 'success'
       });
-      // console.log(item)
-      // alert("Begin training "+this.selectedModel+" model.");
       let dataset='';
       let batchsize="";
       let rnn="";
@@ -276,17 +223,15 @@ export default {
       let attention="";
       let construct="";
       //getDataset
-      for(let i=0;i<this.options.length;i++){
-        if(this.characterChosen==this.options[i].value){
-          // console.log(this.options[i])
-          dataset=this.options[i].label;
+      for(let i=0;i<this.datasets.length;i++){
+        if(this.characterChosen==this.datasets[i].value){
+          dataset=this.datasets[i].label;
           break;
         }
       }
       //getBatchsize
       for(let i=0;i<this.batchsize.length;i++){
-        if(this.choosenBatchsize==this.batchsize[i].value){
-          // console.log(this.options[i])
+        if(this.choosenBatchsize === this.batchsize[i].value){
           batchsize=this.batchsize[i].label;
           break;
         }
@@ -294,7 +239,6 @@ export default {
       //rnn
       for(let i=0;i<this.rnn.length;i++){
         if(this.choosenRnncell==this.rnn[i].value){
-          // console.log(this.options[i])
           rnn=this.rnn[i].label;
           break;
         }
@@ -302,7 +246,6 @@ export default {
       //embedding
       for(let i=0;i<this.embedding.length;i++){
         if(this.choosenEmbedding==this.embedding[i].value){
-          // console.log(this.options[i])
           embedding=this.embedding[i].label;
           break;
         }
@@ -310,7 +253,6 @@ export default {
       //attention
       for(let i=0;i<this.attention.length;i++){
         if(this.choosenAttention==this.attention[i].value){
-          // console.log(this.options[i])
           attention=this.attention[i].label;
           break;
         }
@@ -318,63 +260,49 @@ export default {
       //constructor
       for(let i=0;i<this.construct.length;i++){
         if(this.choosenConstruct==this.construct[i].value){
-          // console.log(this.options[i])
           construct=this.construct[i].label;
           break;
         }
       }
-      // console.log(dataset)
-      // console.log(attention)
-      // console.log(construct)
-      // this.$axios({
-      //   method: 'post',
-      //   url: '/train/'+item.name,
-      //   data: {
-      //     name: this.input,
-      //     data: dataset,
-      //     batchsize:batchsize,
-      //     epoch:this.epoch,
-      //     rnn_cell:rnn,
-      //     embedding:embedding,
-      //     attention:attention,
-      //     constructor:construct
-      //   }
-      // }
-      // ).then(res => {
-      //   if (res.data=="name_existed"){
-      //     alert("ERROR! This name has existed! ");
-      //     console.log("name_existed checking.");
-      //     console.log(res.data);
-      //   }
-      //   // else {
-      //   //   alert("Success!Begin training "+item.name+" model.");
-      //   // }
-      //   console.log(this.characterList)
-      //   console.log(res.data);
-      // }).catch(error => {
-      //   console.log(error);
-      //   alert("TRAIN ERROR! Check Console plz! ");
-      //   this.$axios({
-      //         method: 'post',
-      //         url: '/error/'+item.name,
-      //       }
-      //   ).then(res => {
-      //     console.log(this.characterList)
-      //     console.log(res.data);
-      //   }).catch(error => {
-      //     console.log(error);});
-      // });
+      this.$axios({
+        method: 'post',
+        url: '/model/train/'+this.selectedModelId,
+        data: {
+          login_name: this.$store.state.user.username,
+          name: this.input,
+          dataset: dataset,
+          batch_size:batchsize,
+          epoch:this.epoch,
+          rnn_cell:rnn,
+          embedding:embedding,
+          attention:attention,
+          constructor:construct
+        }
+      }
+      ).then(res => {
+        if (res.data=="name_existed"){
+          this.$notify({
+            message: 'ERROR! Please change task_name! ',
+            type: 'error'
+          });
+        }
+      }).catch(error => {
+        console.log(error);
+        this.$notify({
+          message: 'TRAIN ERROR! Check Console plz! ',
+          type: 'error'
+        });
+      });
     },
   },
   mounted() {
     this.getAllDatasets()
     this.loadDeepModels()
-
   },
   data() {
 
     return {
-      selectedModel:'',
+      selectedModelId:'',
       selectedDeepModel: [],
       deepModelsOptions: [],
       choosenBatchsize:32,
@@ -385,13 +313,8 @@ export default {
       choosenAttention:1,
       choosenConstruct:3,
       input:'',
-      options: [
-        // { value: 1, label: "VQA-Med-2019" },
-        // { value: 2, label: "VQA-RAD" },
-        // { value: 3, label: "MVQA(Our)" },
-      ],
+      datasets: [],
       rnn:[
-        // { value: 1, label: "RNN" },
         { value: 1, label: "GRU" },
         { value: 2, label: "LSTM" },
       ],
@@ -420,7 +343,6 @@ export default {
         { value: 7, label: "128" },
       ],
       modelType:[
-
         {name:'Joint Embedding  Models',
           model:[
             {name:'--->  ODL',

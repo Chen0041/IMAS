@@ -156,50 +156,46 @@ export default {
         }
       }).catch(error => {
         console.log(error);
-        alert("ERROR! Load Reports Failed! ");
+        this.$notify({
+          title: 'Error',
+          message: "ERROR! Load Reports Failed! ",
+          type: 'error'
+        });
       });
     },
     deleteTask(name){
       this.$axios({
         method: 'delete',
         url: '/model/delete/'+name,
+        data: {
+          login_name: this.$store.state.user.username,
+        }
       }).then(res => {
         console.log(res.data);
-        // alert("Delete failed models sucess! Please refresh manually.");
+        location.reload();
       }).catch(error => {
         console.log(error);
-        // alert("ERROR! Delete Reports Failed! ");
+        this.$notify({
+          title: 'Error',
+          message: 'ERROR! Delete Reports Failed! ',
+          type: 'error'
+        });
       });
     },
     deleteFailed(){
-
-      // this.stepsActive = 0;
-      // this.downloadVisable = true;
-
       this.$axios({
         method: 'delete',
         url: '/model/deleteFailed',
       }).then(res => {
         console.log(res.data);
-        alert("Delete failed models sucess! Please refresh manually.");
-        // const content=res.data;
-        // const blob=new Blob([content]);
-        // const fileName='report.csv';
-        // if('download' in document.createElement('a')){
-        //   const link=document.createElement('a')
-        //   link.download=fileName
-        //   link.style.display='none'
-        //   link.href=URL.createObjectURL(blob)
-        //   document.body.appendChild(link)
-        //   link.click()
-        //   URL.revokeObjectURL(link.href)
-        //   document.body.removeChild(link)
-        // }else{
-        //   navigator.msSaveBlob(blob,fileName)
-        // }
+        location.reload();
       }).catch(error => {
         console.log(error);
-        alert("ERROR! Delete Reports Failed! ");
+        this.$notify({
+          title: 'Error',
+          message: 'Delete error! Check console for detail. ',
+          type: 'error'
+        });
       });
     },
     tableRowClassName({row, rowIndex}) {
@@ -249,7 +245,11 @@ export default {
         }
       }).catch(error => {
         console.log(error);
-        alert("ERROR! Load Reports Failed! ");
+        this.$notify({
+          title: 'Error',
+          message: 'ERROR! Load Reports Failed! ',
+          type: 'error'
+        });
       });
     },
   },

@@ -103,10 +103,6 @@ class Dataset(models.Model):
 class DeepLearningModel(models.Model):
     name = models.CharField(max_length=20)
     category_id = models.IntegerField()
-    introduction = models.CharField(max_length=1024, blank=True, null=True)
-    article_title = models.CharField(max_length=50, blank=True, null=True)
-    article_url = models.CharField(max_length=128, blank=True, null=True)
-    code_url = models.CharField(max_length=128, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -221,18 +217,19 @@ class SingleDiseaseCaseInfo(models.Model):
 
 class TrainModelTask(models.Model):
     task_name = models.CharField(max_length=50)
+    user_id = models.IntegerField()
     dataset_id = models.IntegerField()
     model_id = models.IntegerField()
     epoch = models.IntegerField(blank=True, null=True)
     batch_size = models.IntegerField(blank=True, null=True)
     rnn_cell = models.CharField(max_length=20, blank=True, null=True)
     embedding = models.CharField(max_length=20, blank=True, null=True)
+    attention = models.CharField(max_length=20, blank=True, null=True)
     constructor = models.CharField(max_length=20, blank=True, null=True)
     date = models.CharField(max_length=20, blank=True)
     status = models.IntegerField()
     after_train_model_path = models.CharField(max_length=128, blank=True, null=True)
     f1 = models.FloatField(blank=True, null=True)
-    accuracy = models.FloatField(blank=True, null=True)
     recall = models.FloatField(blank=True, null=True)
     precision = models.FloatField(blank=True, null=True)
     bleu = models.FloatField(blank=True, null=True)

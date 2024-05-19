@@ -15,7 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
 from backend.settings import whole_project_path
-from imas.models import Dataset, SingleDiseaseCaseInfo, UserInfo
+from imas.models import Dataset, SingleDiseaseCaseInfo, UserInfo, TrainModelTask
 
 
 @csrf_exempt
@@ -58,8 +58,9 @@ def delete_dataset(request, dataset):
     user_id = UserInfo.objects.get(login_name=login_name).id
     if dataset.user_id != user_id:
         return HttpResponse("fail", status=500, content_type="application/json")
-    # 批量删除single_case_info中的对应记录
+    # 批量删除single_case_info, train_model_task中的对应记录
     SingleDiseaseCaseInfo.objects.filter(dataset_id=dataset.id).delete()
+    TrainModelTask.objects.filter(dataset_id=dataset.id).delete()
     dataset.delete()
     return HttpResponse("success", content_type="application/json")
 
