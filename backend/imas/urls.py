@@ -36,7 +36,7 @@ urlpatterns = [
 
     # auto_QA
     path("autuQA/models", auto_QA_views.get_trained_models),
-    path('autuQA/<str:model_name>', auto_QA_views.upload_medical_archive),
+    path('autuQA/<str:task_name>', auto_QA_views.upload_medical_archive),
 
     # QA_platform
     path("loadPicture/<int:question_id>", QA_platform_views.get_picture),

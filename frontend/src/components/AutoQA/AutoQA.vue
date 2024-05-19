@@ -163,11 +163,13 @@
               this.characterList.push(temp)
             }
             console.log(this.characterList)
-            // this.characterChosen=this.characterList[0].label;
-
           }).catch(error => {
             console.log(error);
-            alert("ERROR! Load Models Failed! ");
+            this.$notify({
+              title: 'Error',
+              message: "ERROR! Load Models Failed! ",
+              type: 'error'
+            });
           });
         },
         showInfo: function (s) {
@@ -184,7 +186,6 @@
         },
 
         chooseCharacter(value) {
-          console.log(value)
           this.characterChosen = value;
           this.blue=!this.blue
           if(this.blue){
@@ -192,29 +193,6 @@
           }else {
             this.blue_color=120;
           }
-          // clear the AI dialog
-          // document.removeChild(document.getElementById(
-          //     "chat-history-box"
-          // ))
-          // let chat_history_node=document.getElementById("app").firstChild.
-          //     firstChild.lastChild.lastChild.firstChild.lastChild.firstChild.firstChild.firstChild.firstChild.lastChild.firstChild;
-          // let chat_history_childs=chat_history_node.childNodes;
-          // // console.log((document.getElementById("app").firstChild).
-          // //     firstChild.lastChild.lastChild.firstChild.lastChild.firstChild.firstChild.firstChild.firstChild.lastChild.firstChild);
-          // console.log(chat_history_childs)
-          // // document.body.innerHTML = "";
-          // for(let i=chat_history_childs.length;i>=0;i--){
-          //   if(chat_history_node.contains(chat_history_childs[i])){
-          //     console.log(chat_history_childs[i])
-          //     chat_history_node.removeChild(chat_history_childs[i])
-          //
-          //   }
-          //   // document.getElementById("app").firstChild.
-          //   //     firstChild.lastChild.lastChild.firstChild.lastChild.firstChild.firstChild.firstChild.firstChild.lastChild.firstChild.removeChild(chat_history_childs[i])
-          // }
-          // // document.getElementById("app").firstChild.
-          // //     firstChild.lastChild.lastChild.firstChild.lastChild.firstChild.firstChild.firstChild.firstChild.lastChild.firstChild.innerHtml="";
-          // console.log(this.characterList[this.characterChosen-1].label)
         },
         linebreak: function (s) {
           return s.replace(this.two_line, "<p></p>").replace(this.one_line, "<br>");
@@ -273,23 +251,21 @@
           document.getElementById(
               "chat-history-box"
           ).scrollTop = document.getElementById("chat-history").scrollHeight;
-          // console.log(error);
-          console.log("modelname:" + this.characterList[this.characterChosen])
 
+          let taskName = ''
+          for(let i=0;i<this.characterList.length;i++){
+            if(this.characterChosen==this.characterList[i].value){
+              taskName=this.characterList[i].label;
+              break;
+            }
+          }
           this.$axios({
             method: "post",
-            // url: "/autuQA/"+this.characterList[this.characterChosen-1].label,//this.characterChosen,
-            url: "/autuQA/Train_test",
+            url: "/autuQA/"+ taskName,
             data: params,
           }).then((res) => {
             window.console.log(res);
             this.$refs["uploadForm"].resetFields();
-            // this.uploadFormVisible = false;
-            this.$message({
-              type: "success",
-              message: "Successully uploaded medical archive!",
-              showClose: true,
-            });
             outer_div = document.createElement("div");
             outer_div.style = "width: 100%; overflow: auto;";
             div = document.createElement("div");

@@ -71,9 +71,7 @@ class AuthUserUserPermissions(models.Model):
 
 
 class AutoAnswerTask(models.Model):
-    user_id = models.IntegerField()
     train_model_id = models.IntegerField()
-    status = models.IntegerField()
     question = models.CharField(max_length=1024)
     picture_path = models.CharField(max_length=128, blank=True, null=True)
     answer = models.CharField(max_length=1024, blank=True, null=True)
