@@ -318,7 +318,11 @@ export default {
         }
       }).catch(error => {
         console.log(error);
-        alert("ERROR! Download Preprocessed Data Failed! ");
+        this.$notify({
+          title: "Error",
+          message: "ERROR! Download Preprocessed Data Failed! ",
+          type: "error",
+        });
       });
     },
     goDelete(dataset){
@@ -337,7 +341,11 @@ export default {
         location.reload();
       }).catch(error => {
         console.log(error);
-        alert("Delete error! ");
+        this.$notify({
+          title: "Error",
+          message: "Delete error! ",
+          type: "error",
+        });
       });
     },
     loadDataset() {

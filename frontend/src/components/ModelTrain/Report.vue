@@ -45,7 +45,6 @@
                     </el-form-item>
                   </el-form>
                 </template>
-
               </el-table-column>
 
               <el-table-column

@@ -46,41 +46,6 @@ const store = new Vuex.Store({
       context.commit("saveSysData", data);
     },
     loadData(context) {
-      // let models = [];
-      // let metrics = [];
-
-      // axios({
-      //   method: 'get',
-      //   url: '/modelCategory/modelName',
-      // }).then(res => {
-      //   // console.log(res.data);
-      //   for (let model in res.data) {
-      //     if (res.data.hasOwnProperty(model)) {
-      //       models[res.data[model].id] = res.data[model].name;
-      //     }
-      //   }
-      // }).catch(error => {
-      //   console.log(error);
-      // });
-
-      // axios({
-      //   method: 'get',
-      //   url: '/modelMetric',
-      // }).then(res => {
-      //   // console.log(res.data);
-      //   for (let metric in res.data) {
-      //     if (res.data.hasOwnProperty(metric)) {
-      //       metrics[res.data[metric].id] = res.data[metric].metricName;
-      //     }
-      //   }
-      // }).catch(error => {
-      //   console.log(error);
-      // });
-
-      // context.commit('saveSysData', {
-      //   models: models,
-      //   metrics: metrics
-      // });
     }
   }
 });

@@ -120,7 +120,7 @@ export default {
         data: {
           login_name: this.newInfoForm.loginName,
           password: this.newInfoForm.password,
-          name: '',
+          username: '',
           age: 0,
           gender: '',
           phone: '',
@@ -130,7 +130,11 @@ export default {
         }
       }).then(res => {
         console.log(res.data);
-        alert("Sign up successfully! ");
+        this.$notify({
+          title: "Success",
+          message: "Sign up successfully! ",
+          type: "success",
+        });
       }).catch(error => {
         console.log(error);
         alert("Sign up ERROR! ");

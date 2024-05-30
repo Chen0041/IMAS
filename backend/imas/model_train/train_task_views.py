@@ -3,6 +3,7 @@ import os
 import random
 from datetime import datetime
 from multiprocessing import Process
+from time import sleep
 
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -73,6 +74,7 @@ def creat_train_task(request, model_id):
 def model_train(task_id):
     task = TrainModelTask.objects.get(id=task_id)
     try:
+        sleep(60)
         task.after_train_model_path = os.path.join(whole_project_path, 'after_train_models/')
         task.f1 = random.uniform(0.5, 0.9)
         task.precision = random.uniform(0.5, 0.9)

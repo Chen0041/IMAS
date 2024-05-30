@@ -181,6 +181,7 @@ class ModelCategory(models.Model):
 class Question(models.Model):
     user_id = models.IntegerField()
     department_id = models.IntegerField()
+    date = models.CharField(max_length=20)
     content = models.CharField(max_length=1024)
     picture_path = models.CharField(max_length=128, blank=True, null=True)
     answer = models.CharField(max_length=1024, blank=True, null=True)
